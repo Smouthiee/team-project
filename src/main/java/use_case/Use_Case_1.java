@@ -1,4 +1,5 @@
 package use_case;
 
-public class Use_Case_1 {
+public class search_flight_number {
+    ;
 }
