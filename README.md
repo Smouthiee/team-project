@@ -37,45 +37,26 @@ Our MVP includes Use Cases: 1, 2, 4, 5, 6
 # 🌐 4. API Information
 Primary API: OpenSky Network API
 
-https://opensky-network.org/api
-
-Endpoints used GET /states/all
-
-Returns all live aircraft state vectors in the world:
-
-- callsign
-
-- latitude & longitude
-
-- speed
-
-- geometric altitude
-
+https://openskynetwork.github.io/opensky-api/
 
 Authentication
 
 
 🔐 OAuth2 Client Credentials Flow
 
-OpenSky now requires OAuth2 for all accounts created after March 2025.
+OpenSky deprecated username/password authentication for new users.
+Our project uses the OAuth2 Client Credentials Flow, which is the recommended, secure, and modern approach.
 
-Our system:
 
-Requests a token using
-POST https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token
 
-Uses the token in the header
-Authorization: Bearer <token>
-
-Refreshes the token automatically when expired
+We send a POST request to the OpenSky authentication server
+with client credentials, our client id and our client secret. If successful, the server returns a JSON object containing
+the access token. Then we use tokens for API request.
 
 This gives us:
-
-Higher request limits (4000/day)
-
-More stable API access
-
-No more 429 (Too Many Requests) issues
+- Higher request limits (4000/day)
+- More stable API access
+- No 429 (Too Many Requests) issues
 
 
 # 🏗️ 5. Architecture
@@ -109,7 +90,7 @@ Frameworks / Drivers
 - Data Access
 
 
-# 🖥️ 5. Screenshots for functionality
+# 🖥️ 5. Functionality
 
 # 🏠 Main Menu
 
@@ -119,17 +100,71 @@ Includes buttons for MVP use cases, exit button and a centered image.
 
 # 🛫 Use Case 5: View Active Flights
 
-![img_2.png](img_2.png)
+Use Case 5 allows a user to view currently active flights belonging to a specific airline.
+The user enters an airline ICAO prefix (such as ACA for Air Canada or AAL for American Airlines), and the system retrieves real-time aircraft data from the OpenSky Network API.
 
+The system then filters all live aircraft by callsign prefix and displays up to 10 matching flights, including each aircraft’s live location (latitude and longitude), altitude, and speed.
+This feature provides users with a quick snapshot of the aircraft currently operating under a chosen airline.
 
-Displays some active flights of the given airline and basic information
+OpenSky’s /states/all endpoint returns real-time ADS-B state vectors for aircraft currently broadcasting.
+However, it does not include every ICAO airline code in the world — only airlines that currently have transponders visible to the network.
+
+And our system must distinguish between:
+
+| Case                                        | Meaning                                            | Expected message               |
+| ------------------------------------------- | -------------------------------------------------- |--------------------------------|
+| **Invalid ICAO prefix**                     | Prefix not used by any real airline in OpenSky     | `"Invalid input..."`           |
+| **Valid ICAO prefix but no active flights** | Airline exists, but no aircraft airborne right now | `"No active flights found..."` |
+| **Valid prefix with active flights**        | Airline exists + OpenSky returned matches          | Display list of flights        |
+
+To support this behavior, we built a validated ICAO airline prefix set (In ViewActiveFlightsInteractor) based on real-world prefixes that actively appear in OpenSky’s ADS-B stream.
+
+The ICAO prefix set included in this project does not contain every airline code in the world.
+Instead, it contains a curated collection of major and frequently active airlines that reliably appear in the OpenSky ADS-B live feed.
+
+This includes most famous international carriers such as:
+- ✈️ American Airlines (AAL)
+- ✈️ Delta (DAL)
+- ✈️ United (UAL)
+- ✈️ Air Canada (ACA)
+- ✈️ WestJet (WJA)
+- ✈️ British Airways (BAW)
+- ✈️ Emirates (UAE)
+- ✈️ Japan Airlines (JAL)
+- and many others…
+
+Although not complete, the set is sufficient for the intended use case, because:
+1. Most users search for well-known airlines, which are included.
+2. Many smaller or regional airlines do not consistently appear in OpenSky's live ADS-B data due to limited coverage or 
+infrequent operations. Even with authenticated API access, including these airlines would not improve functionality, 
+so the project uses the set of major airline ICAO prefixes that reliably have active flights.
+
+The chosen list provides excellent coverage while ensuring a clear and reliable user experience.
+
+# Main Flow:
+The user enters a valid input, e.g. ACA represents for Air Canada.
+
+Displays some active flights of the given airline along with some basic information
 - Callsign (the real-time identifier broadcast by an aircraft (e.g. ACA551 represents for Air Canada flight 551))
 - Latitude/Longitude
 - Altitude (converted to feet)
 - Speed (km/h)
 
+![img_2.png](img_2.png)
 
+# Alternative Flow 1 :
+If the user enters a valid input, but there is no active flight for this airline.
 
+For example AUR (the prefix of Aurigny Air Services) is a valid input and there is no active flight for this airline, then the system will display "No active flights found for this airline", as the picture shows.
+
+![img_3.png](img_3.png)
+
+# Alternative Flow 2 :
+If the user enters an invalid input, the system will display that this is an invalid input, as the picture shows:
+
+![img_4.png](img_4.png)
+
+![img_5.png](img_5.png)
 
 Please keep this up-to-date with information about your project throughout the term.
 
