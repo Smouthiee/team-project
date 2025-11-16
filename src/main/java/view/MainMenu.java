@@ -1,9 +1,9 @@
 package view;
 
 import data_access.ViewActiveFlightDataAccess;
-import data_access.ViewActiveFlightsDataAccessInterface;
-import interface_adapter.ViewRecentFlights.ViewActiveFlightsController;
-import interface_adapter.ViewRecentFlights.ViewActiveFlightsPresenter;
+import use_case.ViewActiveFlights.ViewActiveFlightsDataAccessInterface;
+import interface_adapter.ViewActiveFlights.ViewActiveFlightsController;
+import interface_adapter.ViewActiveFlights.ViewActiveFlightsPresenter;
 import use_case.ViewActiveFlights.ViewActiveFlightsInputBoundary;
 import use_case.ViewActiveFlights.ViewActiveFlightsInteractor;
 import use_case.ViewActiveFlights.ViewActiveFlightsOutputBoundary;
@@ -52,9 +52,6 @@ public class MainMenu extends JFrame {
 
         // Center panel for image
         try {
-            System.out.println("Image exists? " +
-                    (getClass().getResource("/images/logo.jpg") != null));
-
             ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/image/MainMenu.jpg")));
 
             Image scaled = icon.getImage().getScaledInstance(400, 300, Image.SCALE_SMOOTH);
