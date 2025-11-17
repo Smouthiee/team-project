@@ -1,17 +1,44 @@
 package entity;
 
-public class AirlineFlight extends Flight{
+public class AirlineFlight {
 
-    private final String airline;
+    private final String flightNumber;
+    private final double latitude;
+    private final double longitude;
 
-    public AirlineFlight(String flightNumber, String departureAirport, String arrivalAirport,
-                         String status, String departureTime, String arrivalTime,
-                         String airline) {
-        super(flightNumber, departureAirport, arrivalAirport, status, departureTime, arrivalTime);
-        this.airline = airline;
+    private final double altitude;  // meters
+    private final double speed;
+
+    public AirlineFlight(String flightNumber,
+                         double latitude,
+                         double longitude,
+                         double altitude,
+                         double speed) {
+
+        this.flightNumber = flightNumber;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.altitude = altitude;
+        this.speed = speed;
     }
 
-    public String getAirline() {
-        return airline;
+    public String getFlightNumber() {
+        return flightNumber;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public double getAltitude() {
+        return altitude;
+    }
+
+    public double getSpeed() {
+        return speed;
     }
 }
