@@ -1,0 +1,7 @@
+package interface_adapter.AirportDataRS;
+
+import use_case.AirportDataRouteSearch.AirportDataRouteSearchOutputData;
+import use_case.AirportDataRouteSearch.AirportDataRouteSearchOuputBoundary;
+
+public class AirportDataRSPresenter {
+}
