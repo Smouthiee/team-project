@@ -1,7 +1,11 @@
 package app;
 
-import javax.swing.*;
+import view.MainMenu;
 
 public class Main {
     public static void main(String[] args) {
+
+        MainMenu mainMenu = new MainMenu();
+        mainMenu.display();
+    }
 }
