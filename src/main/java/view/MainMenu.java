@@ -50,6 +50,10 @@ public class MainMenu extends JFrame {
         rightPanel.add(exitButton);
         add(rightPanel, BorderLayout.EAST);
 
+        // Unify the size of buttons on MainMenu.
+        unifyButtonSize(searchFlightButton, favouriteButton,  searchByAirportButton,
+                activeFlightsButton, trackFlightButton, exitButton);
+
         // Center panel for image
         try {
             ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/image/MainMenu.jpg")));
@@ -107,5 +111,22 @@ public class MainMenu extends JFrame {
 
     public void display() {
         SwingUtilities.invokeLater(() -> setVisible(true));
+    }
+
+    private void unifyButtonSize(JButton... buttons) {
+        int maxWidth = 0;
+        int maxHeight = 0;
+
+        for (JButton b : buttons) {
+            Dimension size = b.getPreferredSize();
+            maxWidth = Math.max(maxWidth, size.width);
+            maxHeight = Math.max(maxHeight, size.height);
+        }
+
+        Dimension unified = new Dimension(maxWidth + 20, maxHeight + 20);
+
+        for (JButton b : buttons) {
+            b.setPreferredSize(unified);
+        }
     }
 }
