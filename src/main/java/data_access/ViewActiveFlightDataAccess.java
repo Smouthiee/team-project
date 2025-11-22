@@ -62,12 +62,15 @@ public class ViewActiveFlightDataAccess implements ViewActiveFlightsDataAccessIn
 
                 if (!cleanCall.startsWith(prefix)) continue;
 
+                String registeredCountry = flightData.optString(2, "Unknown");
                 double longitude = flightData.optDouble(5, 0.0);
                 double latitude = flightData.optDouble(6, 0.0);
                 double speed = flightData.optDouble(9, -1);
                 double altitude = flightData.optDouble(13, -1);
+                long lastUpdateTime = flightData.optLong(4, -1);
 
-                flights.add(new AirlineFlight(cleanCall, latitude, longitude, altitude, speed));
+                flights.add(new AirlineFlight(cleanCall, registeredCountry, latitude, longitude, altitude,
+                        speed,  lastUpdateTime));
 
                 if (flights.size() >= 10) break;
             }
@@ -79,4 +82,3 @@ public class ViewActiveFlightDataAccess implements ViewActiveFlightsDataAccessIn
         return flights;
     }
 }
-

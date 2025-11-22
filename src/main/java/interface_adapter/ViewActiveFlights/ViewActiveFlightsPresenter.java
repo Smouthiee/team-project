@@ -1,11 +1,10 @@
 package interface_adapter.ViewActiveFlights;
 
-import entity.AirlineFlight;
 import use_case.ViewActiveFlights.ViewActiveFlightsOutputBoundary;
+import use_case.ViewActiveFlights.ViewActiveFlightsOutputData;
 import view.ViewActiveFlightsView;
 
 import javax.swing.*;
-import java.util.List;
 
 public class ViewActiveFlightsPresenter implements ViewActiveFlightsOutputBoundary {
 
@@ -16,8 +15,8 @@ public class ViewActiveFlightsPresenter implements ViewActiveFlightsOutputBounda
     }
 
     @Override
-    public void present(List<AirlineFlight> flights) {
-        view.showFlights(flights);
+    public void present(ViewActiveFlightsOutputData outputData) {
+        view.showFlights(outputData.getFlights());
     }
 
     @Override

@@ -79,7 +79,7 @@ public class ViewActiveFlightsView {
         StringBuilder builder = new StringBuilder();
 
         if (flights == null || flights.isEmpty()) {
-            builder.append("No active flights found for this airline.");
+            builder.append("No active flights found for this airline.\nPlease try again later.");
         } else {
             builder.append("Active Flights\n");
             builder.append("------------------------------\n\n");
@@ -87,17 +87,30 @@ public class ViewActiveFlightsView {
 
                 double altitudeFeet = f.getAltitude() * 3.28084;
                 double speedKmh = f.getSpeed() * 3.6;
+                long now = System.currentTimeMillis() / 1000;
+                long secondsAgo = (f.getLastUpdateTime() > 0) ? now - f.getLastUpdateTime() : -1;
 
-                builder.append("Flight: ").append(f.getFlightNumber()).append("\n")
+
+                builder.append("Flight: ")
+                        .append(f.getFlightNumber())
+                        .append("\n")
+                        .append("Registered Country: ")
+                        .append(f.getRegisteredCountry())
+                        .append("\n")
                         .append("Location: (")
                         .append(String.format("%.2f", f.getLatitude()))
                         .append(", ")
                         .append(String.format("%.2f", f.getLongitude()))
                         .append(")\n")
-                        .append("Altitude: ").append(altitudeFeet > 0 ?
-                                String.format("%.0f ft", altitudeFeet) : "Unknown").append("\n")
-                        .append("Speed: ").append(speedKmh > 0 ?
-                                String.format("%.0f km/h", speedKmh) : "Unknown").append("\n")
+                        .append("Altitude: ")
+                        .append(altitudeFeet > 0 ? String.format("%.0f ft", altitudeFeet) : "Unknown")
+                        .append("\n")
+                        .append("Speed: ")
+                        .append(speedKmh > 0 ? String.format("%.0f km/h", speedKmh) : "Unknown")
+                        .append("\n")
+                        .append("Last Update: ")
+                        .append(secondsAgo >= 0 ? secondsAgo + " seconds ago" : "Unknown")
+                        .append("\n")
                         .append("-----------------------------------------------------\n");
             }
         }
@@ -105,6 +118,6 @@ public class ViewActiveFlightsView {
     }
 
     public void showInvalidPrefixMessage() {
-        resultArea.setText("Invalid input. Please enter a valid ICAO prefix (e.g., AAL, DAL, UAL, ACA).");
+        resultArea.setText("Invalid input. Please enter a valid ICAO prefix (e.g. AAL, UAL, ACA).");
     }
 }

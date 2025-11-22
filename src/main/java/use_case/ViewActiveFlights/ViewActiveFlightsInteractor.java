@@ -9,10 +9,13 @@ public class ViewActiveFlightsInteractor implements ViewActiveFlightsInputBounda
 
     private final ViewActiveFlightsDataAccessInterface flightDataAccess;
     private final ViewActiveFlightsOutputBoundary presenter;
-    // This set contains only airline ICAO prefixes that are known to appear in the
-    // OpenSky Network /states/all endpoint. OpenSky does NOT include all global
-    // ICAO codes, only airlines with active ADS-B transponders frequently seen in
-    // their live data.
+    /**
+     * This set contains some ICAO prefixes of the airlines that are famous in the world and known to appear in the
+     * OpenSky Network API.
+     * OpenSky does NOT include all global ICAO codes, only airlines with active ADS-B transponders frequently
+     * seen in their live data.
+     * See README for further explanation for this set.
+     */
     private static final Set<String> VALID_ICAO_PREFIXES = Set.of(
             "AAL","DAL","UAL","NKS","ASA","JBU","SWA","FFT","ASH","SKW","ENY","RPA","JIA", "GJS","PDT","EDV","ATN",
             "UPS","FDX","ACA","ROU","WJA","CJT","SWG","BAW","EZY","RYR","DLH","AFR","KLM", "VLG","IBE","SWR","SAS",
@@ -44,6 +47,7 @@ public class ViewActiveFlightsInteractor implements ViewActiveFlightsInputBounda
 
         List<AirlineFlight> flights = flightDataAccess.getActiveFlightsByAirline(airlinePrefix);
 
-        presenter.present(flights);
+        ViewActiveFlightsOutputData outputData = new ViewActiveFlightsOutputData(flights);
+        presenter.present(outputData);
     }
 }
