@@ -17,7 +17,27 @@ public class AirportDataRouteSearchInteractor implements AirportDataRouteSearchI
         String takeoffCode = inputData.getTakeOffAirportCode();
         String landingCode = inputData.getLandingAirportCode();
 
-        Airport takeoff = airportDAO.getAirportByCode(takeoffCode);
+        Airport takeOff = airportDAO.getAirportByCode(takeoffCode);
         Airport landing = airportDAO.getAirportByCode(landingCode);
+
+        boolean bothFound = (takeOff != null && landing != null);
+        String message;
+
+        if (!bothFound) {
+            if (takeOff == null && landing == null) {
+                message = "Neither airport " + takeoffCode + " nor " + landingCode + " was found.";
+            } else if (takeOff == null) {
+                message = "Takeoff airport " + takeoffCode + " was not found.";
+            } else {
+                message = "Landing airport " + landingCode + " was not found.";
+            }
+        } else {
+            // Route-finding not yet implemented; just report the two airports.
+            message = "Both airports were found. (Route search not yet implemented.)";
+        }
+
+        AirportDataRouteSearchOutputData outputData =
+                new AirportDataRouteSearchOutputData(takeOff, landing, bothFound, message);
+        presenter.present(outputData);
     }
 }
