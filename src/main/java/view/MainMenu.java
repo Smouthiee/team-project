@@ -1,12 +1,12 @@
 package view;
 
-//import data_access.ViewActiveFlightDataAccess;
-//import use_case.ViewActiveFlights.ViewActiveFlightsDataAccessInterface;
-//import interface_adapter.ViewActiveFlights.ViewActiveFlightsController;
-//import interface_adapter.ViewActiveFlights.ViewActiveFlightsPresenter;
-//import use_case.ViewActiveFlights.ViewActiveFlightsInputBoundary;
-//import use_case.ViewActiveFlights.ViewActiveFlightsInteractor;
-//import use_case.ViewActiveFlights.ViewActiveFlightsOutputBoundary;
+import data_access.ViewActiveFlightDataAccess;
+import use_case.ViewActiveFlights.ViewActiveFlightsDataAccessInterface;
+import interface_adapter.ViewActiveFlights.ViewActiveFlightsController;
+import interface_adapter.ViewActiveFlights.ViewActiveFlightsPresenter;
+import use_case.ViewActiveFlights.ViewActiveFlightsInputBoundary;
+import use_case.ViewActiveFlights.ViewActiveFlightsInteractor;
+import use_case.ViewActiveFlights.ViewActiveFlightsOutputBoundary;
 
 
 import javax.swing.*;
@@ -50,6 +50,10 @@ public class MainMenu extends JFrame {
         rightPanel.add(exitButton);
         add(rightPanel, BorderLayout.EAST);
 
+        // Unify the size of buttons on MainMenu.
+        unifyButtonSize(searchFlightButton, favouriteButton,  searchByAirportButton,
+                activeFlightsButton, trackFlightButton, exitButton);
+
         // Center panel for image
         try {
             ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/image/MainMenu.jpg")));
@@ -84,18 +88,18 @@ public class MainMenu extends JFrame {
                 (this, "Coming soon!"));
 
         // Use case 5: View Active Flights of an Airline
-//        activeFlightsButton.addActionListener(e -> {
-//            this.setVisible(false);
-//
-//            ViewActiveFlightsDataAccessInterface dataAccess = new ViewActiveFlightDataAccess();
-//            ViewActiveFlightsView view = new ViewActiveFlightsView(null);
-//            ViewActiveFlightsOutputBoundary presenter = new ViewActiveFlightsPresenter(view);
-//            ViewActiveFlightsInputBoundary interactor = new ViewActiveFlightsInteractor(dataAccess, presenter);
-//            ViewActiveFlightsController controller = new ViewActiveFlightsController(interactor);
-//
-//            view.setController(controller);
-//            view.display(() -> this.setVisible(true));
-//        });
+        activeFlightsButton.addActionListener(e -> {
+            this.setVisible(false);
+
+            ViewActiveFlightsDataAccessInterface dataAccess = new ViewActiveFlightDataAccess();
+            ViewActiveFlightsView view = new ViewActiveFlightsView(null);
+            ViewActiveFlightsOutputBoundary presenter = new ViewActiveFlightsPresenter(view);
+            ViewActiveFlightsInputBoundary interactor = new ViewActiveFlightsInteractor(dataAccess, presenter);
+            ViewActiveFlightsController controller = new ViewActiveFlightsController(interactor);
+
+            view.setController(controller);
+            view.display(() -> this.setVisible(true));
+        });
 
         // Use Case 6: Track Flight Status
         trackFlightButton.addActionListener(e -> JOptionPane.showMessageDialog
@@ -107,5 +111,22 @@ public class MainMenu extends JFrame {
 
     public void display() {
         SwingUtilities.invokeLater(() -> setVisible(true));
+    }
+
+    private void unifyButtonSize(JButton... buttons) {
+        int maxWidth = 0;
+        int maxHeight = 0;
+
+        for (JButton b : buttons) {
+            Dimension size = b.getPreferredSize();
+            maxWidth = Math.max(maxWidth, size.width);
+            maxHeight = Math.max(maxHeight, size.height);
+        }
+
+        Dimension unified = new Dimension(maxWidth + 20, maxHeight + 20);
+
+        for (JButton b : buttons) {
+            b.setPreferredSize(unified);
+        }
     }
 }
