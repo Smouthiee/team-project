@@ -81,8 +81,9 @@ Use Cases
 
 Interface Adapters
 
-- Controllers
-- Presenters
+- Controller
+- Presenter
+- View Model
 
 Frameworks / Drivers
 
