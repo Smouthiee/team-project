@@ -1,4 +1,4 @@
-package interface_adapter.Favoriteaflight;
+package interface_adapter.FavouriteFlight;
 
 import use_case.FavouriteFlight.FavouriteFlightOutputBoundary;
 import use_case.FavouriteFlight.FavouriteFlightOutputData;
@@ -14,7 +14,7 @@ public class FavouriteFlightPresenter implements FavouriteFlightOutputBoundary {
 
     @Override
     public void present(FavouriteFlightOutputData outputData) {
-        String flightNumber = outputData.getFlightNumber();
+        String flightNumber = outputData.getFlight_number();
         view.showSuccess(flightNumber);
     }
 

@@ -1,4 +1,4 @@
-package interface_adapter.Favoriteaflight;
+package interface_adapter.FavouriteFlight;
 
 import use_case.FavouriteFlight.FavouriteFlightInputBoundary;
 import use_case.FavouriteFlight.FavouriteFlightInputData;

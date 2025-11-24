@@ -1,4 +1,4 @@
-package use_case.Favoriteaflight;
+package use_case.FavouriteFlight;
 
 public interface FavouriteFlightOutputBoundary {
     void present(FavouriteFlightOutputData outputData);
