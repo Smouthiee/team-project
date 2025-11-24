@@ -1,6 +1,7 @@
 package view;
 
 import data_access.ViewActiveFlightDataAccess;
+import interface_adapter.ViewActiveFlights.ViewActiveFlightsViewModel;
 import use_case.ViewActiveFlights.ViewActiveFlightsDataAccessInterface;
 import interface_adapter.ViewActiveFlights.ViewActiveFlightsController;
 import interface_adapter.ViewActiveFlights.ViewActiveFlightsPresenter;
@@ -98,8 +99,9 @@ public class MainMenu extends JFrame {
             this.setVisible(false);
 
             ViewActiveFlightsDataAccessInterface dataAccess = new ViewActiveFlightDataAccess();
+            ViewActiveFlightsViewModel viewModel = new ViewActiveFlightsViewModel();
             ViewActiveFlightsView view = new ViewActiveFlightsView(null);
-            ViewActiveFlightsOutputBoundary presenter = new ViewActiveFlightsPresenter(view);
+            ViewActiveFlightsOutputBoundary presenter = new ViewActiveFlightsPresenter(view, viewModel);
             ViewActiveFlightsInputBoundary interactor = new ViewActiveFlightsInteractor(dataAccess, presenter);
             ViewActiveFlightsController controller = new ViewActiveFlightsController(interactor);
 

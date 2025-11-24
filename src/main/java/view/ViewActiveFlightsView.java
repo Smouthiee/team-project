@@ -1,11 +1,10 @@
 package view;
 
 import interface_adapter.ViewActiveFlights.ViewActiveFlightsController;
-import entity.AirlineFlight;
+import interface_adapter.ViewActiveFlights.ViewActiveFlightsViewModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 
 public class ViewActiveFlightsView {
@@ -75,49 +74,7 @@ public class ViewActiveFlightsView {
         frame.setVisible(true);
     }
 
-    public void showFlights(List<AirlineFlight> flights) {
-        StringBuilder builder = new StringBuilder();
-
-        if (flights == null || flights.isEmpty()) {
-            builder.append("No active flights found for this airline.\nPlease try again later.");
-        } else {
-            builder.append("Active Flights\n");
-            builder.append("------------------------------\n\n");
-            for (AirlineFlight f : flights) {
-
-                double altitudeFeet = f.getAltitude() * 3.28084;
-                double speedKmh = f.getSpeed() * 3.6;
-                long now = System.currentTimeMillis() / 1000;
-                long secondsAgo = (f.getLastUpdateTime() > 0) ? now - f.getLastUpdateTime() : -1;
-
-
-                builder.append("Flight: ")
-                        .append(f.getFlightNumber())
-                        .append("\n")
-                        .append("Registered Country: ")
-                        .append(f.getRegisteredCountry())
-                        .append("\n")
-                        .append("Location: (")
-                        .append(String.format("%.2f", f.getLatitude()))
-                        .append(", ")
-                        .append(String.format("%.2f", f.getLongitude()))
-                        .append(")\n")
-                        .append("Altitude: ")
-                        .append(altitudeFeet > 0 ? String.format("%.0f ft", altitudeFeet) : "Unknown")
-                        .append("\n")
-                        .append("Speed: ")
-                        .append(speedKmh > 0 ? String.format("%.0f km/h", speedKmh) : "Unknown")
-                        .append("\n")
-                        .append("Last Update: ")
-                        .append(secondsAgo >= 0 ? secondsAgo + " seconds ago" : "Unknown")
-                        .append("\n")
-                        .append("-----------------------------------------------------\n");
-            }
-        }
-        resultArea.setText(builder.toString());
-    }
-
-    public void showInvalidPrefixMessage() {
-        resultArea.setText("Invalid input. Please enter a valid ICAO prefix (e.g. AAL, UAL, ACA).");
+    public void showFromViewModel(ViewActiveFlightsViewModel viewModel) {
+        resultArea.setText(viewModel.getDisplayText());
     }
 }
