@@ -1,14 +1,14 @@
 package use_case.SearchFlightDetails;
 
-import data_access.FlightDataAccessInterface;
+import data_access.ViewActiveFlightDataAccess;
 import entity.Flight;
 
 public class SearchFlightDetailsInteractor implements SearchFlightDetailInputBoundary {
 
-    private final FlightDataAccessInterface flightDataAccessObject;
+    private final ViewActiveFlightDataAccess flightDataAccessObject;
     private final SearchFlightDetailsOutputBoundary searchFlightDetailsPresenter;
 
-    public SearchFlightDetailsInteractor(FlightDataAccessInterface flightDataAccessObject,
+    public SearchFlightDetailsInteractor(ViewActiveFlightDataAccess flightDataAccessObject,
                                          SearchFlightDetailsOutputBoundary searchFlightDetailsPresenter) {
         this.flightDataAccessObject = flightDataAccessObject;
         this.searchFlightDetailsPresenter = searchFlightDetailsPresenter;
@@ -18,6 +18,7 @@ public class SearchFlightDetailsInteractor implements SearchFlightDetailInputBou
     @Override
     public void execute(SearchFlightDetailsInputData inputData) {
         String flightNumber = inputData.getFlightNumber();
+        //TODO: resolve flights to flight
         Flight flight = flightDataAccessObject.getFlightByNumber(flightNumber);
 
         SearchFlightDetailsOutputData outputData;
