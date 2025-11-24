@@ -2,18 +2,18 @@ package use_case.AirportDataRouteSearch;
 import entity.Airport;
 
 public class AirportDataRouteSearchInputData {
-    private Airport TakeOffAirport;
-    private Airport LandingAirport;
+    private final String TakeOffAirport;
+    private final String LandingAirport;
 
-    public AirportDataRouteSearchInputData(String TakeOffAirport, String LandingAirport) {
-        this.TakeOffAirport = Airport.getOrCreate(TakeOffAirport);
-        this.LandingAirport = Airport.getOrCreate(LandingAirport);
+    public AirportDataRouteSearchInputData(String takeOffAirport, String landingAirport) {
+        this.TakeOffAirport = takeOffAirport;
+        this.LandingAirport = landingAirport;
     }
 
-    public Airport getTakeOffAirport() {
+    public String getTakeOffAirport() {
         return TakeOffAirport;
     }
-    public Airport getLandingAirport() {
+    public String getLandingAirport() {
         return LandingAirport;
     }
 }

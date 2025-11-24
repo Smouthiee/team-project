@@ -16,39 +16,17 @@ public class Airport {
     private static final Map<String, Airport> REGISTRY = new ConcurrentHashMap<>();
 
     //Constructors section:
-    public static Airport getOrCreate(String iata) {
-        if (iata == null || iata.isBlank()) {
-            throw new IllegalArgumentException("Airport code must not be null or blank");
+    public Airport(String iata) {
+        this.IATA = iata.toUpperCase();
+        this.country = "";
+        this.city = "";
+    }
+
+    public Airport(String iata, String city, String country) {
+        if (iata == null || iata.isEmpty()) {
+            throw new IllegalArgumentException("IATA code cannot be null or empty");
         }
-
-        return REGISTRY.computeIfAbsent(iata, c -> new Airport(c, null,  null));
-    }
-    public static Airport getOrCreate(String iata, String city, String country) {
-        if (iata == null || iata.isBlank()) {
-            throw new IllegalArgumentException("Airport code must not be null or blank");
-        }
-        return REGISTRY.computeIfAbsent(iata, c -> new Airport(c, city, country))
-                .updateMetadata(city, country);
-    }
-
-    private Airport updateMetadata( String city, String country) {
-        if (this.city == null && city != null) this.city = city;
-        if (this.country == null && country != null) this.country = country;
-        return this;
-    }
-
-    public static Airport find(String iata) {
-        if (iata == null) return null;
-        return REGISTRY.get(iata);
-    }
-
-    public static Airport find(String city, String country) {
-        if (city == null) return null;
-        else return REGISTRY.get(city + "-" + country);
-    }
-
-    private Airport(String iata, String city, String country) {
-        this.IATA = iata;
+        this.IATA = iata.toUpperCase();
         this.city = city;
         this.country = country;
     }
@@ -68,6 +46,14 @@ public class Airport {
 
     public Set<Airport> getConnections() {
         return Collections.unmodifiableSet(connections);
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     //Operational methods:
@@ -98,6 +84,16 @@ public class Airport {
 
     @Override
     public String toString(){
-        return country + "," + city + "," + IATA;
+        StringBuilder sb = new StringBuilder();
+        if (!country.isEmpty()) {
+            sb.append(country);
+        }
+        if (!city.isEmpty()) {
+            if (sb.length() > 0) sb.append(", ");
+            sb.append(city);
+        }
+        if (sb.length() > 0) sb.append(", ");
+        sb.append(IATA);
+        return sb.toString();
     }
 }

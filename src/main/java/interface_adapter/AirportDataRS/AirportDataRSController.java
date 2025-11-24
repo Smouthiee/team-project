@@ -9,7 +9,7 @@ public class AirportDataRSController {
 
     public AirportDataRSController(AirportDataRouteSearchInputBoundary interactor) { this.interactor = interactor; }
 
-    public void AirportDataRoute(String TakeOffAirport, String LandingAirport){
+    public void searchRoute(String TakeOffAirport, String LandingAirport){
         AirportDataRouteSearchInputData inputData = new AirportDataRouteSearchInputData(TakeOffAirport,LandingAirport);
         interactor.execute(inputData);
     }
