@@ -86,6 +86,12 @@ public class MainMenu extends JFrame {
         // Use Case 4: Search Flights by Airports
         searchByAirportButton.addActionListener(e -> JOptionPane.showMessageDialog
                 (this, "Coming soon!"));
+        // ----- Once complete:
+        //searchByAirportButton.addActionListener(e -> {
+        //    this.setVisible(false);
+        //    AirportDataRouteSearchView view = new AirportDataRouteSearchView(controller);
+        //    view.display(() -> this.setVisible(true));
+
 
         // Use case 5: View Active Flights of an Airline
         activeFlightsButton.addActionListener(e -> {

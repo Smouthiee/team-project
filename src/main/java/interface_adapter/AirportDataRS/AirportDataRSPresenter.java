@@ -12,7 +12,7 @@ public class AirportDataRSPresenter implements AirportDataRouteSearchOutputBound
     }
 
     @Override
-    public void present(AirportDataRouteSearchOutputData OutputData){
-        view.showAirport(OutputData);
+    public void present(AirportDataRouteSearchOutputData outputData) {
+        view.showResult(outputData);
     }
 }
