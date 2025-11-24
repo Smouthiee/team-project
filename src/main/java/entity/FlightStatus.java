@@ -9,7 +9,7 @@ public class FlightStatus {
     private double altitude;
     private double speed;
 
-    public FlightStatus(String flightNumber, String estimatedArrivalTime,
+    public FlightStatus(String flightNumber, double estimatedArrivalTime,
                         double latitude, double longitude, double altitude, double speed) {
         this.flightNumber = flightNumber;
         this.estimatedArrivalTime = estimatedArrivalTime;
