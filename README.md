@@ -21,14 +21,14 @@ real-time flight details (e.g. departure and arrival times), find available flig
 
 # 👥 3. User Stories & Responsibilities
 
-| User Story | Description                                                                                                                                         | Use Case #       | Assigned To |
-| ---------- |-----------------------------------------------------------------------------------------------------------------------------------------------------|------------------|-|
-| **US1**    | As a user, I want to search for flight details using a flight number, so I can view basic details such as departure and arrival times.              | Use Case 1 (MVP) | **Frank Li** |
-| **US2**    | As a user, I want to add a flight to My Favourites, so I can quicklt check my preferred flights.                                                    | Use Case 2 (MVP) | **Alex Zhang** |
-| **US3**    | As a user, I want to check ticket prices for a flight using its flight number, so that I can compare and plan my budget.                            | Use Case 3       | *(optional)* |
-| **US4**    | As a user, I want to input departure and destination airports to check if there are available flights, so that I can choose a suitable flight plan. | Use Case 4 (MVP) | |
+| User Story | Description                                                                                                                                         | Use Case #       | Assigned To      |
+| ---------- |-----------------------------------------------------------------------------------------------------------------------------------------------------|------------------|------------------|
+| **US1**    | As a user, I want to search for flight details using a flight number, so I can view basic details such as departure and arrival times.              | Use Case 1 (MVP) | **Frank Li**     |
+| **US2**    | As a user, I want to add a flight to My Favourites, so I can quicklt check my preferred flights.                                                    | Use Case 2 (MVP) | **Alex Zhang**   |
+| **US3**    | As a user, I want to check ticket prices for a flight using its flight number, so that I can compare and plan my budget.                            | Use Case 3       | *(optional)*     |
+| **US4**    | As a user, I want to input departure and destination airports to check if there are available flights, so that I can choose a suitable flight plan. | Use Case 4 (MVP) | **Yanfei Tu**    |
 | **US5**    | As a user, I want to view active flights operated by a specific airline (based on ICAO prefix), so that I can see its current operations.           | Use Case 5 (MVP) | **Zhaotong Pan** |
-| **US6**    | As a user, I want to track the live status of a flight in real time, so that I can see whether it’s on time, delayed, or already landed.            | Use Case 6 (MVP) | |
+| **US6**    | As a user, I want to track the live status of a flight in real time, so that I can see whether it’s on time, delayed, or already landed.            | Use Case 6 (MVP) | **David Yao**    |
 
 
 Our MVP includes Use Cases: 1, 2, 4, 5, 6
@@ -81,8 +81,9 @@ Use Cases
 
 Interface Adapters
 
-- Controllers
-- Presenters
+- Controller
+- Presenter
+- View Model
 
 Frameworks / Drivers
 
@@ -103,7 +104,7 @@ Includes buttons for MVP use cases, exit button and a centered image.
 Use Case 5 allows a user to view currently active flights belonging to a specific airline.
 The user enters an airline ICAO prefix (such as ACA for Air Canada or AAL for American Airlines), and the system retrieves real-time aircraft data from the OpenSky Network API.
 
-The system then filters all live aircraft by callsign prefix and displays up to 10 matching flights, including each aircraft’s live location (latitude and longitude), altitude, and speed.
+The system then filters all live aircraft by callsign prefix and displays up to 10 matching flights, including each aircraft’s registered country, live location (latitude and longitude), altitude, speed and the last update time.
 This feature provides users with a quick snapshot of the aircraft currently operating under a chosen airline.
 
 OpenSky’s /states/all endpoint returns real-time ADS-B state vectors for aircraft currently broadcasting.
@@ -115,7 +116,7 @@ And our system must distinguish between:
 | ------------------------------------------- | -------------------------------------------------- |--------------------------------|
 | **Invalid ICAO prefix**                     | Prefix not used by any real airline in OpenSky     | `"Invalid input..."`           |
 | **Valid ICAO prefix but no active flights** | Airline exists, but no aircraft airborne right now | `"No active flights found..."` |
-| **Valid prefix with active flights**        | Airline exists + OpenSky returned matches          | Display list of flights        |
+| **Valid prefix with active flights**        | Airline exists + OpenSky returned matches          | Display a list of flights      |
 
 To support this behavior, we built a validated ICAO airline prefix set (In ViewActiveFlightsInteractor) based on real-world prefixes that actively appear in OpenSky’s ADS-B stream.
 
@@ -144,27 +145,28 @@ The chosen list provides excellent coverage while ensuring a clear and reliable 
 # Main Flow:
 The user enters a valid input, e.g. ACA represents for Air Canada.
 
-Displays some active flights of the given airline along with some basic information
+Displays some active flights of the given airline along with some important information
 - Callsign (the real-time identifier broadcast by an aircraft (e.g. ACA551 represents for Air Canada flight 551))
-- Latitude/Longitude
-- Altitude (converted to feet)
-- Speed (km/h)
+- Registered country
+- Location (Latitude and Longitude)
+- Altitude
+- Speed
+- Last update time
 
-![img_2.png](img_2.png)
+![img.png](img.png)
 
 # Alternative Flow 1 :
 If the user enters a valid input, but there is no active flight for this airline.
 
-For example AUR (the prefix of Aurigny Air Services) is a valid input and there is no active flight for this airline, then the system will display "No active flights found for this airline", as the picture shows.
+For example AUR (the prefix of Aurigny Air Services) is a valid input and there is no active flight for this airline, then the system will display that no active flights found for this airline.
 
-![img_3.png](img_3.png)
+![img_12.png](img_12.png)
 
 # Alternative Flow 2 :
 If the user enters an invalid input, the system will display that this is an invalid input, as the picture shows:
 
-![img_4.png](img_4.png)
+![img_22.png](img_22.png)
 
-![img_5.png](img_5.png)
 
 Please keep this up-to-date with information about your project throughout the term.
 
