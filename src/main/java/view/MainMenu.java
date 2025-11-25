@@ -1,5 +1,6 @@
 package view;
 
+/*
 import data_access.ViewActiveFlightDataAccess;
 import interface_adapter.ViewActiveFlights.ViewActiveFlightsViewModel;
 import use_case.ViewActiveFlights.ViewActiveFlightsDataAccessInterface;
@@ -8,6 +9,14 @@ import interface_adapter.ViewActiveFlights.ViewActiveFlightsPresenter;
 import use_case.ViewActiveFlights.ViewActiveFlightsInputBoundary;
 import use_case.ViewActiveFlights.ViewActiveFlightsInteractor;
 import use_case.ViewActiveFlights.ViewActiveFlightsOutputBoundary;
+*/
+
+import interface_adapter.FavouriteFlight.FavouriteFlightController;
+import interface_adapter.FavouriteFlight.FavouriteFlightPresenter;
+import use_case.FavouriteFlight.FavouriteFlightInputBoundary;
+import use_case.FavouriteFlight.FavouriteFlightInteractor;
+import use_case.FavouriteFlight.FavouriteFlightOutputBoundary;
+import view.FavouriteFlightView;
 
 
 import javax.swing.*;
@@ -81,12 +90,35 @@ public class MainMenu extends JFrame {
                 (this, "Coming soon!"));
 
         // Use Case 2: Favourite a Flight
-        favouriteButton.addActionListener(e -> JOptionPane.showMessageDialog
-                (this, "Coming soon!"));
+        favouriteButton.addActionListener(e -> {
+            this.setVisible(false);
+
+            // Create the View (without controller initially)
+            FavouriteFlightView view = new FavouriteFlightView(null);
+
+            // Create the Presenter (needs the view)
+            FavouriteFlightOutputBoundary presenter =
+                    new FavouriteFlightPresenter(view);
+
+            // Create the Interactor (needs the presenter)
+            FavouriteFlightInputBoundary interactor =
+                    new FavouriteFlightInteractor(presenter);
+
+            // Create the Controller (needs the interactor)
+            FavouriteFlightController controller =
+                    new FavouriteFlightController(interactor);
+
+            // Give the view the controller
+            view.setController(controller);
+
+            // Display the view
+            view.display(() -> this.setVisible(true));
+        });
 
         // Use Case 4: Search Flights by Airports
         searchByAirportButton.addActionListener(e -> JOptionPane.showMessageDialog
                 (this, "Coming soon!"));
+        /*
         // ----- Once complete:
         //searchByAirportButton.addActionListener(e -> {
         //    this.setVisible(false);
@@ -108,7 +140,7 @@ public class MainMenu extends JFrame {
             view.setController(controller);
             view.display(() -> this.setVisible(true));
         });
-
+        */
         // Use Case 6: Track Flight Status
         trackFlightButton.addActionListener(e -> JOptionPane.showMessageDialog
                 (this, "Coming soon!"));
