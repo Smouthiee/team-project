@@ -1,42 +1,45 @@
 package use_case.SearchFlightDetails;
 
-import data_access.FlightDataAccessInterface;
 import entity.Flight;
 
 public class SearchFlightDetailsInteractor implements SearchFlightDetailInputBoundary {
 
-    private final FlightDataAccessInterface flightDataAccessObject;
-    private final SearchFlightDetailsOutputBoundary searchFlightDetailsPresenter;
+    private final SearchFlightDetailsOutputBoundary presenter;
+    private final SearchFlightDetailsDataAccessInterface dao;
 
-    public SearchFlightDetailsInteractor(FlightDataAccessInterface flightDataAccessObject,
-                                         SearchFlightDetailsOutputBoundary searchFlightDetailsPresenter) {
-        this.flightDataAccessObject = flightDataAccessObject;
-        this.searchFlightDetailsPresenter = searchFlightDetailsPresenter;
+    public SearchFlightDetailsInteractor(SearchFlightDetailsDataAccessInterface dao,
+                                         SearchFlightDetailsOutputBoundary presenter) {
+        this.dao = dao;
+        this.presenter = presenter;
     }
-
 
     @Override
     public void execute(SearchFlightDetailsInputData inputData) {
-        String flightNumber = inputData.getFlightNumber();
-        Flight flight = flightDataAccessObject.getFlightByNumber(flightNumber);
+
+        String callsign = inputData.getFlightNumber();
+
+        Flight flight = dao.getFlightByNumber(callsign);
 
         SearchFlightDetailsOutputData outputData;
 
         if (flight == null) {
-            outputData = new SearchFlightDetailsOutputData(flightNumber, "N/A" , "N/A",
-                            "Flight not found", "N/A", "N/A");
-            searchFlightDetailsPresenter.present(outputData);
-            return;
-
+            outputData = new SearchFlightDetailsOutputData(
+                    callsign,
+                    "Unknown",
+                    -1,
+                    "Unknown",
+                    false
+            );
         } else {
             outputData = new SearchFlightDetailsOutputData(
-                    flight.getFlightNumber(),
-                    flight.getDepartureAirport(),
-                    flight.getArrivalAirport(),
-                    flight.getStatus(),
-                    flight.getDepartureTime(),
-                    flight.getArrivalTime()
+                    flight.getCallSign(),
+                    flight.getOriginCountry(),
+                    flight.getTimePosition(),
+                    flight.getSquawk(),
+                    flight.isOnGround()
             );
         }
+
+        presenter.present(outputData);
     }
 }

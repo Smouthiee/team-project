@@ -1,47 +1,42 @@
 package use_case.SearchFlightDetails;
 
-public class SearchFlightDetailsOutputData  {
-    private String flightNumber;
-    private final String departureAirport;
-    private final String arrivalAirport;
-    private final String status;
-    private final String departureTime;
-    private final String arrivalTime;
+public class SearchFlightDetailsOutputData {
 
-    public SearchFlightDetailsOutputData(String flightNumber,
-                                         String departureAirport,
-                                         String arrivalAirport,
-                                         String status,
-                                         String departureTime,
-                                         String arrivalTime) {
-        this.flightNumber = flightNumber;
-        this.departureAirport = departureAirport;
-        this.arrivalAirport = arrivalAirport;
-        this.status = status;
-        this.departureTime = departureTime;
-        this.arrivalTime = arrivalTime;
+    private final String callSign;
+    private final String originCountry;
+    private final long timePosition;
+    private final String squawk;
+    private final boolean onGround;
+
+    public SearchFlightDetailsOutputData(String callSign,
+                                         String originCountry,
+                                         long timePosition,
+                                         String squawk,
+                                         boolean onGround) {
+        this.callSign = callSign;
+        this.originCountry = originCountry;
+        this.timePosition = timePosition;
+        this.squawk = squawk;
+        this.onGround = onGround;
     }
 
-    public void setFlightNumber(String flightNumber) {
-        this.flightNumber = flightNumber;
+    public String getCallSign() {
+        return callSign;
     }
 
-    public String getFlightNumber() {
-        return flightNumber;
+    public String getOriginCountry() {
+        return originCountry;
     }
-    public String getDepartureAirport() {
-        return departureAirport;
+
+    public long getTimePosition() {
+        return timePosition;
     }
-    public String getArrivalAirport() {
-        return arrivalAirport;
+
+    public String getSquawk() {
+        return squawk;
     }
-    public String getStatus() {
-        return status;
-    }
-    public String getDepartureTime() {
-        return departureTime;
-    }
-    public String getArrivalTime() {
-        return arrivalTime;
+
+    public boolean isOnGround() {
+        return onGround;
     }
 }

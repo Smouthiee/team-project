@@ -1,44 +1,43 @@
 package entity;
 
 public class Flight {
-    private final String flightNumber;
-    private final String departureAirport;
-    private final String arrivalAirport;
-    private final String status;
-    private final String departureTime;
-    private final String arrivalTime;
 
-    public Flight(String flightNumber, String departureAirport, String arrivalAirport,
-                  String status, String departureTime, String arrivalTime) {
-        this.flightNumber = flightNumber;
-        this.departureAirport = departureAirport;
-        this.arrivalAirport = arrivalAirport;
-        this.status = status;
-        this.departureTime = departureTime;
-        this.arrivalTime = arrivalTime;
+    private final String callSign;
+    private final String originCountry;
+    private final long timePosition;
+    private final String squawk;
+    private final boolean onGround;
+
+    public Flight(String callSign,
+                  String originCountry,
+                  long timePosition,
+                  String squawk,
+                  boolean onGround) {
+
+        this.callSign = callSign;
+        this.originCountry = originCountry;
+        this.timePosition = timePosition;
+        this.squawk = squawk;
+        this.onGround = onGround;
     }
 
-    public String getFlightNumber() {
-        return flightNumber;
+    public String getCallSign() {
+        return callSign;
     }
 
-    public String getDepartureAirport() {
-        return departureAirport;
+    public String getOriginCountry() {
+        return originCountry;
     }
 
-    public String getArrivalAirport() {
-        return arrivalAirport;
+    public long getTimePosition() {
+        return timePosition;
     }
 
-    public String getStatus() {
-        return status;
+    public String getSquawk() {
+        return squawk;
     }
 
-    public String getDepartureTime() {
-        return departureTime;
-    }
-
-    public String getArrivalTime() {
-        return arrivalTime;
+    public boolean isOnGround() {
+        return onGround;
     }
 }
