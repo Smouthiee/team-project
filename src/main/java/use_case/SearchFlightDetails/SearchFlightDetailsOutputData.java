@@ -1,6 +1,6 @@
-package entity;
+package use_case.SearchFlightDetails;
 
-public class Flight {
+public class SearchFlightDetailsOutputData {
 
     private final String callSign;
     private final String originCountry;
@@ -8,12 +8,11 @@ public class Flight {
     private final String squawk;
     private final boolean onGround;
 
-    public Flight(String callSign,
-                  String originCountry,
-                  long timePosition,
-                  String squawk,
-                  boolean onGround) {
-
+    public SearchFlightDetailsOutputData(String callSign,
+                                         String originCountry,
+                                         long timePosition,
+                                         String squawk,
+                                         boolean onGround) {
         this.callSign = callSign;
         this.originCountry = originCountry;
         this.timePosition = timePosition;

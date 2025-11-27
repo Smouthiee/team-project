@@ -1,14 +1,13 @@
-package use_case.ViewRecentFlights;
+package use_case.ViewActiveFlights;
 
 import entity.AirlineFlight;
+
 import java.util.List;
 
-
-public class ViewRecentFlightsOutputData {
-
+public class ViewActiveFlightsOutputData {
     private final List<AirlineFlight> flights;
 
-    public ViewRecentFlightsOutputData(List<AirlineFlight> flights) {
+    public ViewActiveFlightsOutputData(List<AirlineFlight> flights) {
         this.flights = flights;
     }
 
