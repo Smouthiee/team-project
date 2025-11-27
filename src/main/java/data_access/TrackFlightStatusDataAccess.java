@@ -1,0 +1,85 @@
+package data_access;
+
+import entity.FlightStatus;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Scanner;
+
+public class TrackFlightStatusDataAccess implements TrackFlightStatusDataAccessInterface {
+
+    @Override
+    public FlightStatus getStatusByFlightNumber(String flightNumber) {
+
+        // 统一大写 + 去掉空格，跟 ViewActive 一样的清洗方式
+        String target = flightNumber.toUpperCase().trim().replaceAll("\\s+", "");
+
+        try {
+            String token = OpenSkyTokenProvider.getAccessToken();
+            if (token == null) {
+                System.out.println("ERROR: OAuth token is null");
+                return null;
+            }
+
+            URL url = new URL("https://opensky-network.org/api/states/all");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Authorization", "Bearer " + token);
+
+            conn.connect();
+
+            int responseCode = conn.getResponseCode();
+            if (responseCode != 200) {
+                System.out.println("Authenticated OpenSky error: " + responseCode);
+                return null;
+            }
+
+            StringBuilder stringBuilder = new StringBuilder();
+            Scanner scanner = new Scanner(conn.getInputStream());
+            while (scanner.hasNext()) {
+                stringBuilder.append(scanner.nextLine());
+            }
+            scanner.close();
+
+            JSONObject json = new JSONObject(stringBuilder.toString());
+            JSONArray states = json.getJSONArray("states");
+
+            for (int i = 0; i < states.length(); i++) {
+                JSONArray flightData = states.getJSONArray(i);
+
+                String callSign = flightData.isNull(1) ? null : flightData.optString(1).trim();
+                if (callSign == null || callSign.isEmpty()) continue;
+
+                String cleanCall = callSign.toUpperCase().replaceAll("\\s+", "");
+
+                if (!cleanCall.equals(target)) {
+                    continue;
+                }
+
+                double longitude = flightData.optDouble(5, 0.0);
+                double latitude = flightData.optDouble(6, 0.0);
+                double speed = flightData.optDouble(9, -1);    // velocity
+                double altitude = flightData.optDouble(13, -1); // geo_altitude
+                int lastUpdateTime = flightData.optInt(4, -1); // last_contact
+
+                FlightStatus status = new FlightStatus(
+                        cleanCall,
+                        latitude,
+                        longitude,
+                        altitude,
+                        speed,
+                        lastUpdateTime
+                );
+
+                return status;
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error calling authenticated OpenSky API: " + e.getMessage());
+        }
+
+        return null;
+    }
+}
