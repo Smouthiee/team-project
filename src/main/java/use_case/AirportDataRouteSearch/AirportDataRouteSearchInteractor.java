@@ -14,8 +14,8 @@ public class AirportDataRouteSearchInteractor implements AirportDataRouteSearchI
 
     @Override
     public void execute(AirportDataRouteSearchInputData inputData) {
-        String takeoffCode = inputData.getTakeOffAirport();
-        String landingCode = inputData.getLandingAirport();
+        String takeoffCode = inputData.getTakeOffAirportCode();
+        String landingCode = inputData.getLandingAirportCode();
 
         Airport takeOff = airportDAO.getAirportByCode(takeoffCode);
         Airport landing = airportDAO.getAirportByCode(landingCode);
