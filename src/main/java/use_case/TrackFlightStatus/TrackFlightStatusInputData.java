@@ -1,5 +1,4 @@
 package use_case.TrackFlightStatus;
-import use_case.SearchFlightDetails.SearchFlightDetailsInputData;
 
 public class TrackFlightStatusInputData {
     private final String flightNumber;

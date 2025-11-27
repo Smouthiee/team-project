@@ -20,6 +20,7 @@ public class TrackFlightStatusInteractor implements TrackFlightStatusInputBounda
         String message;
         String eta = null;
         double lat = 0, lon = 0, alt = 0, speed = 0;
+        int lastUpdate = 0;
 
         if (status == null) {
             message = String.format(
@@ -27,12 +28,11 @@ public class TrackFlightStatusInteractor implements TrackFlightStatusInputBounda
                     flightNumber
             );
         } else {
-            eta = status.getEstimatedArrivalTime();
             lat = status.getLatitude();
             lon = status.getLongitude();
             alt = status.getAltitude();
             speed = status.getSpeed();
-
+            lastUpdate = status.getLastUpdate();
         }
         message = String.format(
                 "Flight %s live status:\n" +
@@ -41,16 +41,14 @@ public class TrackFlightStatusInteractor implements TrackFlightStatusInputBounda
                         "Altitude: %.0f\n" +
                         "Speed: %.0f",
                 status.getFlightNumber(),
-                eta,
                 lat, lon,
-                alt, speed
+                alt, speed, lastUpdate
         );
 
     TrackFlightStatusOutputData outputData =
             new TrackFlightStatusOutputData(
                     flightNumber,
-                    eta,
-                    lat, lon, alt, speed,
+                    lat, lon, alt, speed, lastUpdate,
                     message
             );
 

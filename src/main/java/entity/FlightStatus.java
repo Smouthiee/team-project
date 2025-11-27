@@ -3,28 +3,24 @@ package entity;
 public class FlightStatus {
 
     private final String flightNumber;
-    private final String estimatedArrivalTime;
     private double latitude;
     private double longitude;
     private double altitude;
     private double speed;
+    private int lastUpdate;
 
-    public FlightStatus(String flightNumber, double estimatedArrivalTime,
-                        double latitude, double longitude, double altitude, double speed) {
+    public FlightStatus(String flightNumber, double latitude,
+                        double longitude, double altitude, double speed, int lastUpdate) {
         this.flightNumber = flightNumber;
-        this.estimatedArrivalTime = estimatedArrivalTime;
         this.latitude = latitude;
         this.longitude = longitude;
         this.altitude = altitude;
         this.speed = speed;
+        this.lastUpdate = lastUpdate;
     }
 
     public String getFlightNumber() {
         return flightNumber;
-    }
-
-    public String getEstimatedArrivalTime() {
-        return estimatedArrivalTime;
     }
 
     public double getLatitude() {
@@ -42,6 +38,8 @@ public class FlightStatus {
     public double getSpeed() {
         return speed;
     }
+
+    public int getLastUpdate() {return lastUpdate;}
 
     public void updateStatus(double latitude, double longitude, double altitude, double speed) {
         this.latitude = latitude;

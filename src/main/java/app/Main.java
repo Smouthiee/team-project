@@ -1,9 +1,6 @@
 package app;
 
 import view.MainMenu;
-import view.ViewRecentFlightsView;
-
-import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {

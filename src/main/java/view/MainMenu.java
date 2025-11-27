@@ -1,6 +1,7 @@
 package view;
 
 import app.AppBuilder;
+import app.TrackFlightStatusBuilder;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,8 +63,12 @@ public class MainMenu extends JFrame {
                 (this, "Coming soon!"));
         recentFlightsButton.addActionListener(e -> JOptionPane.showMessageDialog
                 (this, "Coming soon!"));
-        trackFlightButton.addActionListener(e -> JOptionPane.showMessageDialog
-                (this, "Coming soon!"));
+        trackFlightButton.addActionListener(e -> {
+            // 用 AppBuilder 组装好整条链，拿到 View
+            view.TrackFlightStatusView view =
+                    TrackFlightStatusBuilder.   buildTrackFlightStatusFeature();
+            view.display();
+        });
 
         // Exit
         exitButton.addActionListener(e -> System.exit(0));

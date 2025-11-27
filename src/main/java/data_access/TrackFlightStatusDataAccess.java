@@ -46,31 +46,23 @@ public class TrackFlightStatusDataAccess implements TrackFlightStatusDataAccessI
             JSONObject json = new JSONObject(stringBuilder.toString());
             JSONArray states = json.getJSONArray("states");
 
-            // 遍历所有航班，只要找到一个 callsign 匹配就 return
             for (int i = 0; i < states.length(); i++) {
                 JSONArray flightData = states.getJSONArray(i);
 
-                // index 1 是 callsign
                 String callSign = flightData.isNull(1) ? null : flightData.optString(1).trim();
                 if (callSign == null || callSign.isEmpty()) continue;
 
                 String cleanCall = callSign.toUpperCase().replaceAll("\\s+", "");
 
                 if (!cleanCall.equals(target)) {
-                    continue; // 不是这班航班，跳过
+                    continue;
                 }
 
-                // 找到了对应航班，取经纬度、高度、速度、时间等
                 double longitude = flightData.optDouble(5, 0.0);
                 double latitude = flightData.optDouble(6, 0.0);
                 double speed = flightData.optDouble(9, -1);    // velocity
                 double altitude = flightData.optDouble(13, -1); // geo_altitude
-                long lastUpdateTime = flightData.optLong(4, -1); // last_contact
-
-                // 这里的 FlightStatus 构造器按照你自己的类来改
-                // 下面只是一个示例：假设 FlightStatus 有这些字段：
-                // (String flightNumber, double latitude, double longitude,
-                //  double altitude, double speed, long lastUpdateTime)
+                int lastUpdateTime = flightData.optInt(4, -1); // last_contact
 
                 FlightStatus status = new FlightStatus(
                         cleanCall,
@@ -81,14 +73,13 @@ public class TrackFlightStatusDataAccess implements TrackFlightStatusDataAccessI
                         lastUpdateTime
                 );
 
-                return status; // 找到就直接返回
+                return status;
             }
 
         } catch (Exception e) {
             System.out.println("Error calling authenticated OpenSky API: " + e.getMessage());
         }
 
-        // 没找到匹配的 callsign，返回 null
         return null;
     }
 }
