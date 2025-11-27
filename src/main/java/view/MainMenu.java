@@ -1,6 +1,7 @@
 package view;
 
 
+import data_access.SearchFlightDetailsDataAccess;
 import data_access.ViewActiveFlightDataAccess;
 import interface_adapter.SearchFlightDetails.SearchFlightDetailsController;
 import interface_adapter.SearchFlightDetails.SearchFlightDetailsPresenter;
