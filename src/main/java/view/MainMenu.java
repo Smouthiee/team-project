@@ -1,6 +1,6 @@
 package view;
 
-/*
+
 import data_access.ViewActiveFlightDataAccess;
 import interface_adapter.ViewActiveFlights.ViewActiveFlightsViewModel;
 import use_case.ViewActiveFlights.ViewActiveFlightsDataAccessInterface;
@@ -9,7 +9,7 @@ import interface_adapter.ViewActiveFlights.ViewActiveFlightsPresenter;
 import use_case.ViewActiveFlights.ViewActiveFlightsInputBoundary;
 import use_case.ViewActiveFlights.ViewActiveFlightsInteractor;
 import use_case.ViewActiveFlights.ViewActiveFlightsOutputBoundary;
-*/
+
 
 import interface_adapter.FavouriteFlight.FavouriteFlightController;
 import interface_adapter.FavouriteFlight.FavouriteFlightPresenter;
@@ -118,7 +118,7 @@ public class MainMenu extends JFrame {
         // Use Case 4: Search Flights by Airports
         searchByAirportButton.addActionListener(e -> JOptionPane.showMessageDialog
                 (this, "Coming soon!"));
-        /*
+        
         // ----- Once complete:
         //searchByAirportButton.addActionListener(e -> {
         //    this.setVisible(false);
@@ -140,7 +140,7 @@ public class MainMenu extends JFrame {
             view.setController(controller);
             view.display(() -> this.setVisible(true));
         });
-        */
+        
         // Use Case 6: Track Flight Status
         trackFlightButton.addActionListener(e -> JOptionPane.showMessageDialog
                 (this, "Coming soon!"));
