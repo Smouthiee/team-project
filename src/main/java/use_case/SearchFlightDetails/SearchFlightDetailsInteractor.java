@@ -16,15 +16,13 @@ public class SearchFlightDetailsInteractor implements SearchFlightDetailInputBou
     @Override
     public void execute(SearchFlightDetailsInputData inputData) {
 
-        String callsign = inputData.getFlightNumber();
+        String callSign = inputData.getFlightNumber();
 
-        Flight flight = dao.getFlightByNumber(callsign);
-
+        Flight flight = dao.getFlightByNumber(callSign);
         SearchFlightDetailsOutputData outputData;
-
         if (flight == null) {
             outputData = new SearchFlightDetailsOutputData(
-                    callsign,
+                    callSign,
                     "Unknown",
                     -1,
                     "Unknown",
@@ -39,7 +37,6 @@ public class SearchFlightDetailsInteractor implements SearchFlightDetailInputBou
                     flight.isOnGround()
             );
         }
-
         presenter.present(outputData);
     }
 }
