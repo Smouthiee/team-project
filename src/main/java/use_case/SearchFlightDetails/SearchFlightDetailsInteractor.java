@@ -23,7 +23,7 @@ public class SearchFlightDetailsInteractor implements SearchFlightDetailInputBou
         if (flight == null) {
             outputData = new SearchFlightDetailsOutputData(
                     callSign,
-                    "Unknown",
+                    "Unknown/Not ACTIVE Flight",
                     -1,
                     "Unknown",
                     false
