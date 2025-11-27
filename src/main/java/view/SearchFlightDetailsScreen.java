@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class SearchFlightDetailsScreen {
 
-    private final SearchFlightDetailsController controller;
+    private SearchFlightDetailsController controller;
     private final SearchFlightDetailsViewModel viewModel;
 
     private JTextArea resultArea;
@@ -32,13 +32,23 @@ public class SearchFlightDetailsScreen {
         resultArea = new JTextArea();
         resultArea.setEditable(false);
 
-        // When button clicked → ask controller to perform search
         searchButton.addActionListener(e -> {
             String callSign = callSignField.getText().trim();
-            controller.executeSearch(callSign);
 
-            // After presenter updates the ViewModel → refresh view
-            resultArea.setText(viewModel.getDisplayText());
+            resultArea.setText("Loading data... please wait...");
+
+            SwingWorker<Void, Void> worker = new SwingWorker<>() {
+                @Override
+                protected Void doInBackground() {
+                    controller.executeSearch(callSign);
+                    return null;
+                }
+                @Override
+                protected void done() {
+                    resultArea.setText(viewModel.getDisplayText());
+                }
+            };
+            worker.execute();
         });
 
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -52,7 +62,6 @@ public class SearchFlightDetailsScreen {
         frame.add(topPanel, BorderLayout.NORTH);
         frame.add(new JScrollPane(resultArea), BorderLayout.CENTER);
 
-        // Run onClose (optional callback)
         frame.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent e) {
@@ -62,5 +71,8 @@ public class SearchFlightDetailsScreen {
 
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+    public void setController(SearchFlightDetailsController controller) {
+        this.controller = controller;
     }
 }

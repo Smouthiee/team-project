@@ -2,7 +2,13 @@ package view;
 
 
 import data_access.ViewActiveFlightDataAccess;
+import interface_adapter.SearchFlightDetails.SearchFlightDetailsController;
+import interface_adapter.SearchFlightDetails.SearchFlightDetailsPresenter;
+import interface_adapter.SearchFlightDetails.SearchFlightDetailsViewModel;
 import interface_adapter.ViewActiveFlights.ViewActiveFlightsViewModel;
+import use_case.SearchFlightDetails.SearchFlightDetailInputBoundary;
+import use_case.SearchFlightDetails.SearchFlightDetailsInteractor;
+import use_case.SearchFlightDetails.SearchFlightDetailsOutputBoundary;
 import use_case.ViewActiveFlights.ViewActiveFlightsDataAccessInterface;
 import interface_adapter.ViewActiveFlights.ViewActiveFlightsController;
 import interface_adapter.ViewActiveFlights.ViewActiveFlightsPresenter;
@@ -86,8 +92,19 @@ public class MainMenu extends JFrame {
 
         // Button Actions
         // Use Case 1: Search Flight Details
-        searchFlightButton.addActionListener(e -> JOptionPane.showMessageDialog
-                (this, "Coming soon!"));
+        searchFlightButton.addActionListener(e -> {
+            this.setVisible(false);
+
+            SearchFlightDetailsDataAccess dataAccess = new SearchFlightDetailsDataAccess();
+            SearchFlightDetailsViewModel viewModel = new SearchFlightDetailsViewModel();
+            SearchFlightDetailsScreen view = new SearchFlightDetailsScreen(null, viewModel);
+            SearchFlightDetailsOutputBoundary presenter = new SearchFlightDetailsPresenter(viewModel);
+            SearchFlightDetailInputBoundary interactor = new SearchFlightDetailsInteractor(dataAccess, presenter);
+            SearchFlightDetailsController controller = new SearchFlightDetailsController(interactor);
+
+            view.setController(controller);
+            view.display(() -> this.setVisible(true));
+        });
 
         // Use Case 2: Favourite a Flight
         favouriteButton.addActionListener(e -> {
