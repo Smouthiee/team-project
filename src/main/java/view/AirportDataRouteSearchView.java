@@ -8,10 +8,14 @@ import javax.swing.*;
 import java.awt.*;
 
 public class AirportDataRouteSearchView {
-    private final AirportDataRSController controller;
+    private AirportDataRSController controller;
     private JTextArea resultArea;
 
     public AirportDataRouteSearchView(AirportDataRSController controller){
+        this.controller = controller;
+    }
+
+    public void setController(AirportDataRSController controller){
         this.controller = controller;
     }
 
