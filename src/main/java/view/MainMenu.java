@@ -17,6 +17,9 @@ import use_case.ViewActiveFlights.ViewActiveFlightsInputBoundary;
 import use_case.ViewActiveFlights.ViewActiveFlightsInteractor;
 import use_case.ViewActiveFlights.ViewActiveFlightsOutputBoundary;
 
+import use_case.AirportDataRouteSearch.*;
+import interface_adapter.AirportDataRS.*;
+import data_access.AirportStatsDataAccessObject;
 
 import interface_adapter.FavouriteFlight.FavouriteFlightController;
 import interface_adapter.FavouriteFlight.FavouriteFlightPresenter;
@@ -134,14 +137,30 @@ public class MainMenu extends JFrame {
         });
 
         // Use Case 4: Search Flights by Airports
-        searchByAirportButton.addActionListener(e -> JOptionPane.showMessageDialog
-                (this, "Coming soon!"));
+        //searchByAirportButton.addActionListener(e -> JOptionPane.showMessageDialog
+        //        (this, "Coming soon!"));
         
         // ----- Once complete:
-        //searchByAirportButton.addActionListener(e -> {
-        //    this.setVisible(false);
-        //    AirportDataRouteSearchView view = new AirportDataRouteSearchView(controller);
-        //    view.display(() -> this.setVisible(true));
+        searchByAirportButton.addActionListener(e -> {
+                    this.setVisible(false);
+
+                    AirportStatsDataAccessObject DAO = new AirportStatsDataAccessObject();
+                    AirportDataRouteSearchView view =
+                            new AirportDataRouteSearchView(null);
+
+                    AirportDataRouteSearchOutputBoundary presenter =
+                            new AirportDataRSPresenter(view);
+
+                    AirportDataRouteSearchInputBoundary interactor =
+                            new AirportDataRouteSearchInteractor(DAO,presenter);
+
+                    AirportDataRSController controller =
+                            new AirportDataRSController(interactor);
+
+                    view.setController(controller);
+
+                    view.display(() -> this.setVisible(true));
+                });
 
 
         // Use case 5: View Active Flights of an Airline
