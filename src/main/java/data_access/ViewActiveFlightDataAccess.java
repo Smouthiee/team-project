@@ -54,12 +54,12 @@ public class ViewActiveFlightDataAccess implements ViewActiveFlightsDataAccessIn
             for (int i = 0; i < states.length(); i++) {
 
                 JSONArray flightData = states.getJSONArray(i);
+
                 String callSign = flightData.isNull(1) ? null : flightData.optString(1).trim();
 
                 if (callSign == null || callSign.isEmpty()) continue;
 
                 String cleanCall = callSign.toUpperCase().replaceAll("\\s+", "");
-
                 if (!cleanCall.startsWith(prefix)) continue;
 
                 String registeredCountry = flightData.optString(2, "Unknown");
@@ -68,11 +68,8 @@ public class ViewActiveFlightDataAccess implements ViewActiveFlightsDataAccessIn
                 double speed = flightData.optDouble(9, -1);
                 double altitude = flightData.optDouble(13, -1);
                 long lastUpdateTime = flightData.optLong(4, -1);
-
                 flights.add(new AirlineFlight(cleanCall, registeredCountry, latitude, longitude, altitude,
                         speed,  lastUpdateTime));
-
-                if (flights.size() >= 10) break;
             }
 
         } catch (Exception e) {
