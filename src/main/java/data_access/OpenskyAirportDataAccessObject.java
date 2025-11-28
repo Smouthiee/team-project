@@ -73,14 +73,4 @@ public class OpenskyAirportDataAccessObject {
 
         return json.substring(firstQuote + 1, secondQuote);
     }
-
-    public static void main(String[] args) {
-        try {
-            OpenskyAirportDataAccessObject client = OpenskyAirportDataAccessObject.ClientNew("2much4sky-api-client", "YOFr13tuspj7xtJzzA66VahpPtbT1BBX");
-            String token = client.GetAccessToken();
-            System.out.println("Access token: " + token);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }
