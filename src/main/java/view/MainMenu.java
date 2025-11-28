@@ -28,6 +28,7 @@ import use_case.FavouriteFlight.FavouriteFlightInteractor;
 import use_case.FavouriteFlight.FavouriteFlightOutputBoundary;
 import view.FavouriteFlightView;
 
+import app.TrackFlightStatusBuilder;
 
 import javax.swing.*;
 import java.awt.*;
@@ -179,8 +180,11 @@ public class MainMenu extends JFrame {
         });
         
         // Use Case 6: Track Flight Status
-        trackFlightButton.addActionListener(e -> JOptionPane.showMessageDialog
-                (this, "Coming soon!"));
+        trackFlightButton.addActionListener(e -> {
+            view.TrackFlightStatusView view =
+                TrackFlightStatusBuilder.buildTrackFlightStatusFeature();
+            view.display();
+    });
 
         // Exit
         exitButton.addActionListener(e -> System.exit(0));
