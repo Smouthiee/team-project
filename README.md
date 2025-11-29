@@ -99,6 +99,78 @@ Frameworks / Drivers
 
 Includes buttons for MVP use cases, exit button and a centered image.
 
+# 🛫 Use Case 2: Favourite a Flight
+
+Use Case 2 allows a user to save their preferred flights to a favourites list for quick access.
+
+The user enters a flight number (such as AC123 for Air Canada or UA456 for United Airlines), and the system validates the input and stores it in an in-memory favourites list.
+
+The system checks if the flight number is not empty and ensures it hasn't already been added to favourites.
+
+This feature provides users with a way to track flights they're interested in without having to search for them repeatedly, making it easier to monitor flights of personal interest.
+
+
+The system: 
+
+| Case                          | Meaning                                            | Expected message               |
+| ----------------------------- | -------------------------------------------------- |--------------------------------|
+| **Valid flight number**       | Flight number is not empty and not yet favourited     | Success message (green)           |
+| **Duplicate flight number** | Flight number already exists in favourites | Error message (red) |
+| **Invalid input** | Flight number is empty, null, or whitespace          | Error message (red)       |
+
+To support this behavior, the FavouriteFlightInteractor validates that input is not empty and uses the Favourite entity's equals() and hashCode() methods to prevent duplicate entries.
+
+The favourites storage is implemented as a static HashSet in the FavouriteFlightInteractor class.
+
+This approach provides fast duplicate checking and persistence during the application runtime.
+
+The system does not validate the flight number format itself - any non-empty string is accepted as a valid flight number.
+This design choice is sufficient for the intended use case, because:
+
+1. The feature is designed for users to track any flights they're interested in, regardless of format.
+2. No external API call is made to verify if the flight actually exists.
+3. Format validation could be added later without changing the architecture if needed.
+
+Although favourites are lost when the application closes, this implementation is suitable for the current requirements.
+
+# Main Flow:
+
+The user enters a valid input, e.g. AC123 for Air Canada, in the "Flight Number:" text field.
+
+The user clicks the "❤️ Add to Favourites" button.
+
+The system displays a success message in the "Status / Favourites List" area (shown in green):
+
+✓ SUCCESS! 
+
+Flight AC123 has been added to your favourites.
+
+![use case 2 img_1.png](use case 2 img 1.png)
+
+Additionally, users can click "📋 View All Favourites" button to see a numbered list of all favourited flights with the total count displayed in the bottom result area.
+
+![use case 2 img_2.png](use case 2 img 2.png)
+
+
+# Alternative Flow:
+
+If the user enters an invalid input (empty, null, or whitespace only) or a flight number that is already in favourites, and tries to add it. 
+
+Then the system will display an error message in the "Status / Favourites List" area (shown in red):
+
+✗ ERROR
+
+Flight number is invalid or already in favourites.
+Please check and try again.
+
+
+Enters an invalid input (empty, null, or whitespace only)
+![use case 2 img_3.png](use case 2 img 3.png)
+
+Enters a flight number that is already in favourites
+![use case 2 img_4.png](use case 2 img 4.png)
+
+
 # 🛫 Use Case 5: View Active Flights
 
 Use Case 5 allows a user to view currently active flights belonging to a specific airline.
