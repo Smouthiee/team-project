@@ -9,7 +9,16 @@
     { "code": "LAX", "city": "Los Angeles", "country": "USA" },
     { "code": "JFK", "city": "New York", "country": "USA" },
     { "code": "LHR", "city": "London", "country": "UK" },
-    { "code": "CDG", "city": "Paris", "country": "France" }
+    { "code": "CDG", "city": "Paris", "country": "France" },
+    { "code": "BKK", "city": "Bangkok", "country": "Thailand" },
+    { "code": "SIN", "city": "Singapore", "country": "Singapore" },
+    { "code": "XMN", "city": "Xiamen", "country": "China" },
+    { "code": "PEK", "city": "Beijing", "country": "China" },
+    { "code": "PVG", "city": "Paris", "Shanghai": "China" },
+    { "code": "CTS", "city": "Chitose", "country": "Japan" },
+    { "code": "ORD", "city": "Chicago", "country": "USA" },
+    { "code": "SYD", "city": "Sydney", "country": "Australia" },
+    { "code": "DXB", "city": "Dubai", "country": "UAE" }
   ],
   "connections": [
     { "a": "YVR", "b": "YYZ" },
@@ -21,6 +30,33 @@
 
     { "a": "NRT", "b": "LAX" },
     { "a": "LAX", "b": "JFK" },
+
+    { "a": "NRT", "b": "CTS" },
+    { "a": "CTS", "b": "NRT" },
+
+    { "a": "NRT", "b": "YVR" },
+    { "a": "YVR", "b": "NRT" },
+
+    { "a": "SYD", "b": "DXB" },
+    { "a": "DXB", "b": "SYD" },
+
+    { "a": "ORD", "b": "NRT" },
+    { "a": "NRT", "b": "ORD" },
+
+    { "a": "PEK", "b": "XMN" },
+    { "a": "XMN", "b": "PEK" },
+
+    { "a": "XMN", "b": "YVR" },
+    { "a": "YVR", "b": "XMN" },
+
+    { "a": "PVG", "b": "PEK" },
+    { "a": "PEK", "b": "PVG" },
+
+    { "a": "PVG", "b": "YYZ" },
+    { "a": "YYZ", "b": "PVG" },
+
+    { "a": "SIN", "b": "BKK" },
+    { "a": "BKK", "b": "SIN" },
 
     { "a": "LHR", "b": "YYZ" },
     { "a": "LHR", "b": "JFK" },
