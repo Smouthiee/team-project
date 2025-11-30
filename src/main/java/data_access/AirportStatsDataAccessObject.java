@@ -5,8 +5,6 @@ import entity.AirportRepository;
 import use_case.AirportDataRouteSearch.AirportDataAccessInterface;
 import data_access.Util.*;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -37,22 +35,17 @@ public class AirportStatsDataAccessObject implements AirportDataAccessInterface{
         return airportRepository.get(iataCode);
     }
 
-    // OLD CODE:
-    public AirportStatsDataAccessObject() {
-        // Fake data for testing / demo; you can adjust or load from a file later.
-        Airport yyz = new Airport("YYZ", "Toronto", "Canada");
-        Airport yvr = new Airport("YVR", "Vancouver", "Canada");
-        yyz.addconnectTo(yvr);
-
-        airports.put(yyz.getIATA(), yyz);
-        airports.put(yvr.getIATA(), yvr);
-    }
-
-    @Override
-    public Airport getAirportByCode(String iataCode) {
-        if (iataCode == null) {
-            return null;
+    public void offloadSnapshot() {
+        try {
+            var file = persistence.offloadSnapshot(airportRepository);
+            System.out.println("Airport graph offloaded to: " + file);
+        } catch (IOException e) {
+            System.err.println("Failed to offload airport graph: " + e.getMessage());
         }
-        return airports.get(iataCode.toUpperCase());
     }
+
+    public AirportRepository getAirportRepository() {
+        return airportRepository;
+    }
+
 }
