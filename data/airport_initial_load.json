@@ -1,0 +1,29 @@
+{
+  "airports": [
+    { "code": "YVR", "city": "Vancouver", "country": "Canada" },
+    { "code": "YYZ", "city": "Toronto", "country": "Canada" },
+    { "code": "YUL", "city": "Montreal", "country": "Canada" },
+    { "code": "YVR", "city": "Vancouver", "country": "Canada" },
+    { "code": "HND", "city": "Tokyo (Haneda)", "country": "Japan" },
+    { "code": "NRT", "city": "Tokyo (Narita)", "country": "Japan" },
+    { "code": "LAX", "city": "Los Angeles", "country": "USA" },
+    { "code": "JFK", "city": "New York", "country": "USA" },
+    { "code": "LHR", "city": "London", "country": "UK" },
+    { "code": "CDG", "city": "Paris", "country": "France" }
+  ],
+  "connections": [
+    { "a": "YVR", "b": "YYZ" },
+    { "a": "YYZ", "b": "YUL" },
+    { "a": "YVR", "b": "YUL" },
+
+    { "a": "HND", "b": "YYZ" },
+    { "a": "HND", "b": "YVR" },
+
+    { "a": "NRT", "b": "LAX" },
+    { "a": "LAX", "b": "JFK" },
+
+    { "a": "LHR", "b": "YYZ" },
+    { "a": "LHR", "b": "JFK" },
+    { "a": "CDG", "b": "YYZ" }
+  ]
+}

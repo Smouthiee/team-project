@@ -32,6 +32,7 @@ import app.TrackFlightStatusBuilder;
 
 import javax.swing.*;
 import java.awt.*;
+import java.nio.file.Path;
 import java.util.Objects;
 
 
@@ -145,7 +146,7 @@ public class MainMenu extends JFrame {
         searchByAirportButton.addActionListener(e -> {
                     this.setVisible(false);
 
-                    AirportStatsDataAccessObject DAO = new AirportStatsDataAccessObject();
+                    AirportStatsDataAccessObject DAO = new AirportStatsDataAccessObject(Path.of("data"));
                     AirportDataRouteSearchView view =
                             new AirportDataRouteSearchView(null);
 
@@ -160,7 +161,10 @@ public class MainMenu extends JFrame {
 
                     view.setController(controller);
 
-                    view.display(() -> this.setVisible(true));
+                    view.display(() -> {
+                        DAO.offloadSnapshot();
+                        this.setVisible(true);
+                    });
                 });
 
 
