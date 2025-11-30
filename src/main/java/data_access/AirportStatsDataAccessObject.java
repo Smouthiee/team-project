@@ -126,7 +126,7 @@ public class AirportStatsDataAccessObject implements AirportDataAccessInterface{
         ExecutorService executor = Executors.newFixedThreadPool(4);
         List<Callable<Route>> tasks = new ArrayList<>();
 
-        for (String cs : uniqueCallsigns) {
+        for (String cs : selectedCallsigns) {
             tasks.add(() -> {
                 try {
                     ArrayList<String> info = flightClient.getFlightByCallsign(cs);

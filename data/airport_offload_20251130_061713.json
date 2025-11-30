@@ -1,0 +1,278 @@
+{
+  "connections": [
+    {
+      "a": "NRT",
+      "b": "ORD"
+    },
+    {
+      "a": "PEK",
+      "b": "PVG"
+    },
+    {
+      "a": "PVG",
+      "b": "YYZ"
+    },
+    {
+      "a": "LAX",
+      "b": "NRT"
+    },
+    {
+      "a": "JFK",
+      "b": "LAX"
+    },
+    {
+      "a": "CTS",
+      "b": "NRT"
+    },
+    {
+      "a": "CDG",
+      "b": "YYZ"
+    },
+    {
+      "a": "OSL",
+      "b": "SAW"
+    },
+    {
+      "a": "JFK",
+      "b": "LHR"
+    },
+    {
+      "a": "JFK",
+      "b": "SFO"
+    },
+    {
+      "a": "NRT",
+      "b": "YVR"
+    },
+    {
+      "a": "AUH",
+      "b": "MAN"
+    },
+    {
+      "a": "YVR",
+      "b": "YYZ"
+    },
+    {
+      "a": "XMN",
+      "b": "YVR"
+    },
+    {
+      "a": "HND",
+      "b": "YVR"
+    },
+    {
+      "a": "YUL",
+      "b": "YVR"
+    },
+    {
+      "a": "MIA",
+      "b": "PHL"
+    },
+    {
+      "a": "ATL",
+      "b": "PHL"
+    },
+    {
+      "a": "LHR",
+      "b": "YYZ"
+    },
+    {
+      "a": "DXB",
+      "b": "SYD"
+    },
+    {
+      "a": "BKK",
+      "b": "SIN"
+    },
+    {
+      "a": "JED",
+      "b": "MUX"
+    },
+    {
+      "a": "BGY",
+      "b": "SSH"
+    },
+    {
+      "a": "DXB",
+      "b": "NCE"
+    },
+    {
+      "a": "YUL",
+      "b": "YYZ"
+    },
+    {
+      "a": "PEK",
+      "b": "XMN"
+    },
+    {
+      "a": "ATL",
+      "b": "FAY"
+    },
+    {
+      "a": "HND",
+      "b": "YYZ"
+    }
+  ],
+  "airports": [
+    {
+      "country": "USA",
+      "code": "ORD",
+      "city": "Chicago"
+    },
+    {
+      "country": "",
+      "code": "PVG",
+      "city": "Paris"
+    },
+    {
+      "country": "USA",
+      "code": "LAX",
+      "city": "Los Angeles"
+    },
+    {
+      "country": "Japan",
+      "code": "CTS",
+      "city": "Chitose"
+    },
+    {
+      "country": "France",
+      "code": "CDG",
+      "city": "Paris"
+    },
+    {
+      "country": "",
+      "code": "SAW",
+      "city": ""
+    },
+    {
+      "country": "USA",
+      "code": "JFK",
+      "city": "New York"
+    },
+    {
+      "country": "Japan",
+      "code": "NRT",
+      "city": "Tokyo (Narita)"
+    },
+    {
+      "country": "",
+      "code": "AUH",
+      "city": ""
+    },
+    {
+      "country": "Canada",
+      "code": "YVR",
+      "city": "Vancouver"
+    },
+    {
+      "country": "",
+      "code": "PHL",
+      "city": ""
+    },
+    {
+      "country": "UK",
+      "code": "LHR",
+      "city": "London"
+    },
+    {
+      "country": "",
+      "code": "SFO",
+      "city": ""
+    },
+    {
+      "country": "Australia",
+      "code": "SYD",
+      "city": "Sydney"
+    },
+    {
+      "country": "Thailand",
+      "code": "BKK",
+      "city": "Bangkok"
+    },
+    {
+      "country": "",
+      "code": "MIA",
+      "city": ""
+    },
+    {
+      "country": "",
+      "code": "JED",
+      "city": ""
+    },
+    {
+      "country": "",
+      "code": "SSH",
+      "city": ""
+    },
+    {
+      "country": "",
+      "code": "OSL",
+      "city": ""
+    },
+    {
+      "country": "UAE",
+      "code": "DXB",
+      "city": "Dubai"
+    },
+    {
+      "country": "",
+      "code": "NCE",
+      "city": ""
+    },
+    {
+      "country": "",
+      "code": "MUX",
+      "city": ""
+    },
+    {
+      "country": "Canada",
+      "code": "YUL",
+      "city": "Montreal"
+    },
+    {
+      "country": "",
+      "code": "BGY",
+      "city": ""
+    },
+    {
+      "country": "China",
+      "code": "PEK",
+      "city": "Beijing"
+    },
+    {
+      "country": "China",
+      "code": "XMN",
+      "city": "Xiamen"
+    },
+    {
+      "country": "",
+      "code": "ATL",
+      "city": ""
+    },
+    {
+      "country": "Singapore",
+      "code": "SIN",
+      "city": "Singapore"
+    },
+    {
+      "country": "",
+      "code": "MAN",
+      "city": ""
+    },
+    {
+      "country": "Canada",
+      "code": "YYZ",
+      "city": "Toronto"
+    },
+    {
+      "country": "",
+      "code": "FAY",
+      "city": ""
+    },
+    {
+      "country": "Japan",
+      "code": "HND",
+      "city": "Tokyo (Haneda)"
+    }
+  ]
+}
