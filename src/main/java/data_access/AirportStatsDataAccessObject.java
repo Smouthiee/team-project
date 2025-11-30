@@ -13,7 +13,7 @@ public class AirportStatsDataAccessObject implements AirportDataAccessInterface{
         // Fake data for testing / demo; you can adjust or load from a file later.
         Airport yyz = new Airport("YYZ", "Toronto", "Canada");
         Airport yvr = new Airport("YVR", "Vancouver", "Canada");
-        yyz.connectTo(yvr);
+        yyz.addconnectTo(yvr);
 
         airports.put(yyz.getIATA(), yyz);
         airports.put(yvr.getIATA(), yvr);
