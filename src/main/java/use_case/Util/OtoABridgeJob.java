@@ -26,7 +26,7 @@ public class OtoABridgeJob {
         this.flightRadarApiCaller = new FlightRadarApiCaller();
     }
 
-    public void Run(){
+    public void RunOnce(){
         try{
             OpenSkyCallSignSnapShotService.CallsignSnapshotResult snapshot =
                     callsignSnapShotService.snapshotCallsigns();
