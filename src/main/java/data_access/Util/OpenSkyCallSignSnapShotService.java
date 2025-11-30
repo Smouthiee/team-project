@@ -32,6 +32,17 @@ public class OpenSkyCallSignSnapShotService {
             this.callsigns = callsigns;
         }
 
+        public List<String> getCallsigns() {
+            return callsigns;
+        }
+
+        public Long getSnapshotEpochSeconds() {
+            return snapshotEpochSeconds;
+        }
+        public Path getOutputFile() {
+            return outputFile;
+        }
+
         public Path outputFile() {
             return outputFile;
         }

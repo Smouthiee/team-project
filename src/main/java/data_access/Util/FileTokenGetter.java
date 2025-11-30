@@ -26,5 +26,4 @@ public class FileTokenGetter {
             throw new RuntimeException("Failed to load token from config.json", e);
         }
     }
-    }
 }
