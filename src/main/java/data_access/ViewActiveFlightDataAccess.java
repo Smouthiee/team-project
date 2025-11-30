@@ -5,8 +5,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import use_case.ViewActiveFlights.ViewActiveFlightsDataAccessInterface;
 
+import java.io.FileWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -39,15 +42,26 @@ public class ViewActiveFlightDataAccess implements ViewActiveFlightsDataAccessIn
                 return flights;
             }
 
-            StringBuilder stringBuilder = new StringBuilder();
-            Scanner scanner = new Scanner(conn.getInputStream());
-            while (scanner.hasNext()) {
-                stringBuilder.append(scanner.nextLine());
-            }
-            scanner.close();
+            String jsonText;
+            try {
+                StringBuilder stringBuilder = new StringBuilder();
+                Scanner scanner = new Scanner(conn.getInputStream());
+                while (scanner.hasNextLine()) {
+                    stringBuilder.append(scanner.nextLine());
+                }
 
-            JSONObject json = new JSONObject(stringBuilder.toString());
-            JSONArray states = json.getJSONArray("states");
+                jsonText = stringBuilder.toString();
+                saveCache(jsonText, airlinePrefix);
+            } catch (Exception e) {
+                System.out.println("API failed. Falling back to cache...");
+                jsonText = loadCache();
+            }
+            if (jsonText == null) {
+                throw new RuntimeException("No API or cached data available.");
+            }
+
+            JSONObject object = new JSONObject(jsonText);
+            JSONArray states = object.getJSONArray("states");
 
             String prefix = airlinePrefix.toUpperCase().trim();
 
@@ -78,4 +92,67 @@ public class ViewActiveFlightDataAccess implements ViewActiveFlightsDataAccessIn
 
         return flights;
     }
+
+    private void saveCache(String jsonText, String prefix) {
+        try {
+
+            JSONObject root;
+            // If cache exists, load old file first
+            if (Files.exists(Paths.get("src/OpenSky_cache.json"))) {
+                String existing = Files.readString(Paths.get("src/OpenSky_cache.json"));
+                root = new JSONObject(existing);
+            } else {
+                root = new JSONObject();
+            }
+            // Read previous search count (if any)
+            int oldCount = root.optInt("searchCount", 0);
+
+            // Update data
+            root.put("searchCount", oldCount + 1);
+            root.put("lastPrefixSearched", prefix);
+            root.put("lastUpdated", System.currentTimeMillis() / 1000);
+
+            root.put("cachedFlights", new JSONObject(jsonText));
+
+            // Write formatted JSON
+            try (FileWriter writer = new FileWriter("src/OpenSky_cache.json")) {
+                writer.write(root.toString(2));   // pretty print
+                writer.flush();
+                System.out.println("Cache updated: JSON data + API data saved.");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Cache save failed: " + e.getMessage());
+        }
+    }
+
+    private String loadCache() {
+
+        try {
+            if (!Files.exists(Paths.get("src/OpenSky_cache.json"))) {
+                System.out.println("No cache file found.");
+                return null;
+            }
+
+            String content = Files.readString(Paths.get("src/OpenSky_cache.json"));
+            JSONObject root = new JSONObject(content);
+
+            int searchCount = root.optInt("searchCount", 0);
+            String prefix = root.optString("lastPrefixSearched", "N/A");
+            long lastUpdated = root.optLong("lastUpdated", 0);
+
+            System.out.println("Loaded cache metadata:");
+            System.out.println("Search count: " + searchCount);
+            System.out.println("Last prefix: " + prefix);
+            System.out.println("Last updated: " + lastUpdated);
+
+            JSONObject cachedFlights = root.getJSONObject("cachedFlights");
+            return cachedFlights.toString();
+
+        } catch (Exception e) {
+            System.out.println("Cache read failed: " + e.getMessage());
+            return null;
+        }
+    }
+
 }
