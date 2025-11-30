@@ -144,7 +144,7 @@ public class MainMenu extends JFrame {
         searchByAirportButton.addActionListener(e -> {
                     this.setVisible(false);
 
-                    AirportStatsDataAccessObject DAO = new AirportStatsDataAccessObject();
+                    AirportStatsDataAccessObject DAO = new AirportStatsDataAccessObject("data");
                     AirportDataRouteSearchView view =
                             new AirportDataRouteSearchView(null);
 
