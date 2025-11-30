@@ -160,7 +160,10 @@ public class MainMenu extends JFrame {
 
                     view.setController(controller);
 
-                    view.display(() -> this.setVisible(true));
+                    view.display(() -> {
+                        DAO.offloadSnapshot();
+                        this.setVisible(true);
+                    });
                 });
 
 
