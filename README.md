@@ -176,7 +176,7 @@ Enters a flight number that is already in favourites
 Use Case 5 allows a user to view currently active flights belonging to a specific airline.
 The user enters an airline ICAO prefix (such as ACA for Air Canada or AAL for American Airlines), and the system retrieves real-time aircraft data from the OpenSky Network API.
 
-The system then filters all live aircraft by callsign prefix and displays up to 10 matching flights, including each aircraft’s registered country, live location (latitude and longitude), altitude, speed and the last update time.
+The system then filters all live aircraft by callsign prefix and displays matching flights of the given airline, along with other important information, including each aircraft’s registered country, live location (latitude and longitude), altitude, speed and the last update time.
 This feature provides users with a quick snapshot of the aircraft currently operating under a chosen airline.
 
 OpenSky’s /states/all endpoint returns real-time ADS-B state vectors for aircraft currently broadcasting.

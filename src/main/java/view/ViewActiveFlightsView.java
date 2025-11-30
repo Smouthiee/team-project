@@ -23,7 +23,7 @@ public class ViewActiveFlightsView {
     public void display(Runnable onClose) {
         JFrame frame = new JFrame("View Active Airline Flights");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(600, 450);
+        frame.setSize(500, 600);
         frame.setLayout(new BorderLayout());
 
         JLabel label = new JLabel("Enter airline ICAO prefix (e.g. AAL, DAL, ACA):");
@@ -38,7 +38,7 @@ public class ViewActiveFlightsView {
         topPanel.add(searchButton, BorderLayout.EAST);
 
         topPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        resultArea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        resultArea.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 10));
 
         frame.add(topPanel, BorderLayout.NORTH);
         frame.add(new JScrollPane(resultArea), BorderLayout.CENTER);
