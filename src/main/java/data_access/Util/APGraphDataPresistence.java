@@ -86,14 +86,15 @@ public class APGraphDataPresistence {
                     .orElse(null);
         }
     }
+
     private void loadFromJson(JSONObject root, AirportRepository repo) {
         // 1. Airports
         JSONArray airportsArr = root.optJSONArray("airports");
         if (airportsArr != null) {
             for (int i = 0; i < airportsArr.length(); i++) {
                 JSONObject obj = airportsArr.getJSONObject(i);
-                String code    = obj.getString("code").trim().toUpperCase();
-                String city    = obj.optString("city", "");
+                String code = obj.getString("code").trim().toUpperCase();
+                String city = obj.optString("city", "");
                 String country = obj.optString("country", "");
 
                 Airport a = repo.getOrCreate(code);
@@ -105,5 +106,62 @@ public class APGraphDataPresistence {
                     a.setCountry(country);
                 }
             }
+        }
+        // 2. Connections
+        JSONArray connArr = root.optJSONArray("connections");
+        if (connArr != null) {
+            for (int i = 0; i < connArr.length(); i++) {
+                JSONObject c = connArr.getJSONObject(i);
+                String codeA = c.getString("a").trim().toUpperCase();
+                String codeB = c.getString("b").trim().toUpperCase();
+
+                Airport a = repo.getOrCreate(codeA);
+                Airport b = repo.getOrCreate(codeB);
+                a.addconnectTo(b);
+            }
+        }
+    }
+        private JSONObject buildSnapshotJson(AirportRepository repo) {
+            JSONObject root = new JSONObject();
+            JSONArray airportsArr = new JSONArray();
+            JSONArray connectionsArr = new JSONArray();
+
+            // 1. Airports
+            for (Airport a : repo.getAllAirports()) {
+                JSONObject obj = new JSONObject();
+                obj.put("code", a.getIATA());
+                obj.put("city", a.getCity());
+                obj.put("country", a.getCountry());
+                airportsArr.put(obj);
+            }
+
+            // 2. Connections (avoid duplicates by using sorted key "AAA:BBB")
+            Set<String> seen = new HashSet<>();
+            for (Airport a : repo.getAllAirports()) {
+                String codeA = a.getIATA();
+                for (Airport b : a.getConnections()) {
+                    String codeB = b.getIATA();
+                    if (codeA.equalsIgnoreCase(codeB)) continue;
+
+                    String key = makeKey(codeA, codeB);
+                    if (seen.add(key)) {
+                        String[] parts = key.split(":");
+                        JSONObject c = new JSONObject();
+                        c.put("a", parts[0]);
+                        c.put("b", parts[1]);
+                        connectionsArr.put(c);
+                    }
+                }
+            }
+
+            root.put("airports", airportsArr);
+            root.put("connections", connectionsArr);
+            return root;
+        }
+
+        private String makeKey(String a, String b) {
+            String aa = a.trim().toUpperCase();
+            String bb = b.trim().toUpperCase();
+            return (aa.compareTo(bb) <= 0) ? aa + ":" + bb : bb + ":" + aa;
         }
 }

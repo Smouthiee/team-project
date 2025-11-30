@@ -25,6 +25,15 @@ public class AirportRepository {
         return airportsByCode.values();
     }
 
+    public void clear(){
+        airportsByCode.clear();
+    }
+
+    public boolean contains(String code) {
+        if (code == null) return false;
+        return airportsByCode.containsKey(code.trim().toUpperCase());
+    }
+
     public void connect(String IATA1, String IATA2) {
         Airport a = getOrCreate(IATA1);
         Airport b = getOrCreate(IATA2);
