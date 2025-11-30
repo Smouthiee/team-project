@@ -26,8 +26,7 @@ public class SearchFlightDetailsInteractor implements SearchFlightDetailInputBou
                     "Unknown/Not ACTIVE Flight",
                     -1,
                     "Unknown",
-                    false
-            );
+                    false);
         } else {
             outputData = new SearchFlightDetailsOutputData(
                     flight.getCallSign(),

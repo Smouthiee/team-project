@@ -21,14 +21,14 @@ real-time flight details (e.g. departure and arrival times), find available flig
 
 # 👥 3. User Stories & Responsibilities
 
-| User Story | Description                                                                                                                                         | Use Case #       | Assigned To      |
-| ---------- |-----------------------------------------------------------------------------------------------------------------------------------------------------|------------------|------------------|
-| **US1**    | As a user, I want to search for flight details using a flight number, so I can view basic details such as departure and arrival times.              | Use Case 1 (MVP) | **Frank Li**     |
-| **US2**    | As a user, I want to add a flight to My Favourites, so I can quicklt check my preferred flights.                                                    | Use Case 2 (MVP) | **Alex Zhang**   |
-| **US3**    | As a user, I want to check ticket prices for a flight using its flight number, so that I can compare and plan my budget.                            | Use Case 3       | *(optional)*     |
-| **US4**    | As a user, I want to input departure and destination airports to check if there are available flights, so that I can choose a suitable flight plan. | Use Case 4 (MVP) | **Yanfei Tu**    |
-| **US5**    | As a user, I want to view active flights operated by a specific airline (based on ICAO prefix), so that I can see its current operations.           | Use Case 5 (MVP) | **Zhaotong Pan** |
-| **US6**    | As a user, I want to track the live status of a flight in real time, so that I can see whether it’s on time, delayed, or already landed.            | Use Case 6 (MVP) | **David Yao**    |
+| User Story | Description                                                                                                                                                            | Use Case #       | Assigned To      |
+| ---------- |------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|------------------|
+| **US1**    | As a user, I want to search for flight details using a flight number, so I can view basic details such as Call Sign, Origin Country, Time Position, Squawk, On Ground. | Use Case 1 (MVP) | **Frank Li**     |
+| **US2**    | As a user, I want to add a flight to My Favourites, so I can quicklt check my preferred flights.                                                                       | Use Case 2 (MVP) | **Alex Zhang**   |
+| **US3**    | As a user, I want to check ticket prices for a flight using its flight number, so that I can compare and plan my budget.                                               | Use Case 3       | *(optional)*     |
+| **US4**    | As a user, I want to input departure and destination airports to check if there are available flights, so that I can choose a suitable flight plan.                    | Use Case 4 (MVP) | **Yanfei Tu**    |
+| **US5**    | As a user, I want to view active flights operated by a specific airline (based on ICAO prefix), so that I can see its current operations.                              | Use Case 5 (MVP) | **Zhaotong Pan** |
+| **US6**    | As a user, I want to track the live status of a flight in real time, so that I can see whether it’s on time, delayed, or already landed.                               | Use Case 6 (MVP) | **David Yao**    |
 
 
 Our MVP includes Use Cases: 1, 2, 4, 5, 6
@@ -97,7 +97,28 @@ Frameworks / Drivers
 
 ![img_1.png](img_1.png)
 
+
 Includes buttons for MVP use cases, exit button and a centered image.
+
+# 🛫 Use Case 1: Search Flight Details
+
+Use Case 1 allows for a user to input the ICAO prefix of a flight in addition to number assigned, flight number,
+the user will be returned with the flight, Call Sign, Origin Country, Time Position, Squawk, On Ground.
+The system then filters the data provided by the OpenSky API for the above mentioned information.
+
+| Case                                 | Meaning                                             | Expected message              |
+|--------------------------------------|-----------------------------------------------------|-------------------------------|
+| **Invalid ICAO call sign**           | ICAO CallSign incorrect.                            | `"Unknown/Not ACTIVE Flight"` |
+| **Valid ICAO prefix but not flying** | CallSign, exists but no aircraft airborne right now | `"Time Position: -1"`         |
+| **Valid prefix with active flights** | Airline exists + OpenSky returned matches           | Display all valid information |
+
+The system ONLY provides flights that are on the OpenSky API; this meaning, if a flight is displayed on other flight
+tracking websites such as flightradar24 and not on OpenSky, the search function will display that the inputted callsign
+flight's Origin Country is "Unknown/Not ACTIVE Flight", and Time Position as -1.
+
+This use case is not restricted, however, Squawk Code is sometimes displayed as "Unknown" and not to be taken as the flight
+is invalid / incorrect input. The squawk being unknown is simply a matter of on some flights it is not public information,
+and or it changes frequently due to airtraffic control reasons.
 
 # 🛫 Use Case 5: View Active Flights
 
