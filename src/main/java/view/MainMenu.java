@@ -31,6 +31,7 @@ import view.FavouriteFlightView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.nio.file.Path;
 import java.util.Objects;
 
 
@@ -144,7 +145,7 @@ public class MainMenu extends JFrame {
         searchByAirportButton.addActionListener(e -> {
                     this.setVisible(false);
 
-                    AirportStatsDataAccessObject DAO = new AirportStatsDataAccessObject("data");
+                    AirportStatsDataAccessObject DAO = new AirportStatsDataAccessObject(Path.of("data"));
                     AirportDataRouteSearchView view =
                             new AirportDataRouteSearchView(null);
 
