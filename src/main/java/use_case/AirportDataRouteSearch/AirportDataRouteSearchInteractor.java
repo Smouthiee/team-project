@@ -33,7 +33,13 @@ public class AirportDataRouteSearchInteractor implements AirportDataRouteSearchI
             }
         } else {
             // Route-finding not yet implemented; just report the two airports.
-            message = "Both airports were found. (Route search not yet implemented.)";
+            if (takeOff.isConnectedTo(landing)) {
+                message = "Air ports has direct connect flight";
+            }
+            else  {
+                message = "Airports has no direct flight, force-directed graphs search algo not yet implemented.";
+            }
+
         }
 
         AirportDataRouteSearchOutputData outputData =
