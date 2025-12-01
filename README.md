@@ -131,20 +131,30 @@ and changes frequently based on air traffic control reasons.
 
 The user enters a valid flight number, such as ACA007, the system will display the following information.
 As ACA007 is an AirCanada flight originating from YVR, Vancouver International Airport, to HKG Hongkong International Airport
-the information will be as follows
+the information will be as follows:
+
+
 -Callsign: ACA007
+
 -Origin Country: Canada
+
 -Time Position: 1764280572
+
 -Squawk: Unknown
+
 -On Ground: False
 
 # Alternative Flow:
 If the user enters a invalid flight number, such as ACA207322 the system will display the following infromation.
 
 -Callsign: ACA007
+
 -Origin Country: Unknown/Not ACTIVE Flight
+
 -Time Position: -1
+
 -Squawk: Unknown
+
 -On Ground: True
 
 # 🛫 Use Case 2: Favourite a Flight
