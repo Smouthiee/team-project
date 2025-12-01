@@ -1,0 +1,14 @@
+
+Load airports + connections from a JSON object into the repository.
+
+JSON format:
+{
+  "airports": [
+    { "code": "YVR", "city": "Vancouver", "country": "Canada" },
+    ...
+  ],
+  "connections": [
+    { "a": "YVR", "b": "YYZ" },
+    ...
+  ]
+}

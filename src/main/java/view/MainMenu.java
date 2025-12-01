@@ -17,6 +17,9 @@ import use_case.ViewActiveFlights.ViewActiveFlightsInputBoundary;
 import use_case.ViewActiveFlights.ViewActiveFlightsInteractor;
 import use_case.ViewActiveFlights.ViewActiveFlightsOutputBoundary;
 
+import use_case.AirportDataRouteSearch.*;
+import interface_adapter.AirportDataRS.*;
+import data_access.AirportStatsDataAccessObject;
 
 import interface_adapter.FavouriteFlight.FavouriteFlightController;
 import interface_adapter.FavouriteFlight.FavouriteFlightPresenter;
@@ -25,9 +28,11 @@ import use_case.FavouriteFlight.FavouriteFlightInteractor;
 import use_case.FavouriteFlight.FavouriteFlightOutputBoundary;
 import view.FavouriteFlightView;
 
+import app.TrackFlightStatusBuilder;
 
 import javax.swing.*;
 import java.awt.*;
+import java.nio.file.Path;
 import java.util.Objects;
 
 
@@ -134,14 +139,33 @@ public class MainMenu extends JFrame {
         });
 
         // Use Case 4: Search Flights by Airports
-        searchByAirportButton.addActionListener(e -> JOptionPane.showMessageDialog
-                (this, "Coming soon!"));
+        //searchByAirportButton.addActionListener(e -> JOptionPane.showMessageDialog
+        //        (this, "Coming soon!"));
         
         // ----- Once complete:
-        //searchByAirportButton.addActionListener(e -> {
-        //    this.setVisible(false);
-        //    AirportDataRouteSearchView view = new AirportDataRouteSearchView(controller);
-        //    view.display(() -> this.setVisible(true));
+        searchByAirportButton.addActionListener(e -> {
+                    this.setVisible(false);
+
+                    AirportStatsDataAccessObject DAO = new AirportStatsDataAccessObject(Path.of("data"));
+                    AirportDataRouteSearchView view =
+                            new AirportDataRouteSearchView(null);
+
+                    AirportDataRouteSearchOutputBoundary presenter =
+                            new AirportDataRSPresenter(view);
+
+                    AirportDataRouteSearchInputBoundary interactor =
+                            new AirportDataRouteSearchInteractor(DAO,presenter);
+
+                    AirportDataRSController controller =
+                            new AirportDataRSController(interactor);
+
+                    view.setController(controller);
+
+                    view.display(() -> {
+                        DAO.offloadSnapshot();
+                        this.setVisible(true);
+                    });
+                });
 
 
         // Use case 5: View Active Flights of an Airline
@@ -160,8 +184,11 @@ public class MainMenu extends JFrame {
         });
         
         // Use Case 6: Track Flight Status
-        trackFlightButton.addActionListener(e -> JOptionPane.showMessageDialog
-                (this, "Coming soon!"));
+        trackFlightButton.addActionListener(e -> {
+            view.TrackFlightStatusView view =
+                TrackFlightStatusBuilder.buildTrackFlightStatusFeature();
+            view.display();
+    });
 
         // Exit
         exitButton.addActionListener(e -> System.exit(0));

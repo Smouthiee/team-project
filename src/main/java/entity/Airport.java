@@ -48,16 +48,12 @@ public class Airport {
         return Collections.unmodifiableSet(connections);
     }
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
+    public void setCountry(String country) { this.country = country;}
 
-    public void setCity(String city) {
-        this.city = city;
-    }
+    public void setCity(String city) { this.city = city;}
 
     //Operational methods:
-    public void connectTo(Airport other) {
+    public void addconnectTo(Airport other) {
         if (other == null || other == this) return;
         this.connections.add(other);
         other.connections.add(this); // treat as undirected connection

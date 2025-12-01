@@ -106,6 +106,13 @@ Use Case 1 allows for a user to input the ICAO prefix of a flight in addition to
 the user will be returned with the flight, Call Sign, Origin Country, Time Position, Squawk, On Ground.
 The system then filters the data provided by the OpenSky API for the above mentioned information.
 
+Invalid flight numbers will be defined as flight numbers that are not currently being used by aircraft preparing for operations,
+and during operations.
+
+More specifically, if a flight ACA007 is scheduled to fly at 0700HRS Zulu, but at the time of searching, it is 0600HRZS Zulu,
+the flight number will be invalid, as the aircraft is not currently transmitting the callsign information thus OpenSky is not able
+to retreive the information regarding the flight.
+
 | Case                                 | Meaning                                             | Expected message              |
 |--------------------------------------|-----------------------------------------------------|-------------------------------|
 | **Invalid ICAO call sign**           | ICAO CallSign incorrect.                            | `"Unknown/Not ACTIVE Flight"` |
@@ -118,14 +125,106 @@ flight's Origin Country is "Unknown/Not ACTIVE Flight", and Time Position as -1.
 
 This use case is not restricted, however, Squawk Code is sometimes displayed as "Unknown" and not to be taken as the flight
 is invalid / incorrect input. The squawk being unknown is simply a matter of on some flights it is not public information,
-and or it changes frequently due to airtraffic control reasons.
+and changes frequently based on air traffic control reasons.
+
+# Main Flow:
+
+The user enters a valid flight number, such as ACA007, the system will display the following information.
+As ACA007 is an AirCanada flight originating from YVR, Vancouver International Airport, to HKG Hongkong International Airport
+the information will be as follows
+-Callsign: ACA007
+-Origin Country: Canada
+-Time Position: 1764280572
+-Squawk: Unknown
+-On Ground: False
+
+# Alternative Flow:
+If the user enters a invalid flight number, such as ACA207322 the system will display the following infromation.
+
+-Callsign: ACA007
+-Origin Country: Unknown/Not ACTIVE Flight
+-Time Position: -1
+-Squawk: Unknown
+-On Ground: True
+
+# 🛫 Use Case 2: Favourite a Flight
+
+Use Case 2 allows a user to save their preferred flights to a favourites list for quick access.
+
+The user enters a flight number (such as AC123 for Air Canada or UA456 for United Airlines), and the system validates the input and stores it in an in-memory favourites list.
+
+The system checks if the flight number is not empty and ensures it hasn't already been added to favourites.
+
+This feature provides users with a way to track flights they're interested in without having to search for them repeatedly, making it easier to monitor flights of personal interest.
+
+
+The system: 
+
+| Case                          | Meaning                                            | Expected message               |
+| ----------------------------- | -------------------------------------------------- |--------------------------------|
+| **Valid flight number**       | Flight number is not empty and not yet favourited     | Success message (green)           |
+| **Duplicate flight number** | Flight number already exists in favourites | Error message (red) |
+| **Invalid input** | Flight number is empty, null, or whitespace          | Error message (red)       |
+
+To support this behavior, the FavouriteFlightInteractor validates that input is not empty and uses the Favourite entity's equals() and hashCode() methods to prevent duplicate entries.
+
+The favourites storage is implemented as a static HashSet in the FavouriteFlightInteractor class.
+
+This approach provides fast duplicate checking and persistence during the application runtime.
+
+The system does not validate the flight number format itself - any non-empty string is accepted as a valid flight number.
+This design choice is sufficient for the intended use case, because:
+
+1. The feature is designed for users to track any flights they're interested in, regardless of format.
+2. No external API call is made to verify if the flight actually exists.
+3. Format validation could be added later without changing the architecture if needed.
+
+Although favourites are lost when the application closes, this implementation is suitable for the current requirements.
+
+# Main Flow:
+
+The user enters a valid input, e.g. AC123 for Air Canada, in the "Flight Number:" text field.
+
+The user clicks the "❤️ Add to Favourites" button.
+
+The system displays a success message in the "Status / Favourites List" area (shown in green):
+
+✓ SUCCESS! 
+
+Flight AC123 has been added to your favourites.
+
+![use case 2 img_1.png](use case 2 img 1.png)
+
+Additionally, users can click "📋 View All Favourites" button to see a numbered list of all favourited flights with the total count displayed in the bottom result area.
+
+![use case 2 img_2.png](use case 2 img 2.png)
+
+
+# Alternative Flow:
+
+If the user enters an invalid input (empty, null, or whitespace only) or a flight number that is already in favourites, and tries to add it. 
+
+Then the system will display an error message in the "Status / Favourites List" area (shown in red):
+
+✗ ERROR
+
+Flight number is invalid or already in favourites.
+Please check and try again.
+
+
+Enters an invalid input (empty, null, or whitespace only)
+![use case 2 img_3.png](use case 2 img 3.png)
+
+Enters a flight number that is already in favourites
+![use case 2 img_4.png](use case 2 img 4.png)
+
 
 # 🛫 Use Case 5: View Active Flights
 
 Use Case 5 allows a user to view currently active flights belonging to a specific airline.
 The user enters an airline ICAO prefix (such as ACA for Air Canada or AAL for American Airlines), and the system retrieves real-time aircraft data from the OpenSky Network API.
 
-The system then filters all live aircraft by callsign prefix and displays up to 10 matching flights, including each aircraft’s registered country, live location (latitude and longitude), altitude, speed and the last update time.
+The system then filters all live aircraft by callsign prefix and displays matching flights of the given airline, along with other important information, including each aircraft’s registered country, live location (latitude and longitude), altitude, speed and the last update time.
 This feature provides users with a quick snapshot of the aircraft currently operating under a chosen airline.
 
 OpenSky’s /states/all endpoint returns real-time ADS-B state vectors for aircraft currently broadcasting.
