@@ -54,7 +54,7 @@ public class MainMenu extends JFrame {
         JPanel leftPanel = new JPanel(new GridLayout(3, 1, 10, 10));
         JButton searchFlightButton = new JButton("🔍 Search Flight Details");
         JButton favouriteButton = new JButton("❤️ Favourite a Flight");
-        JButton searchByAirportButton = new JButton("🛫 Search Flights by Airport");
+        JButton searchByAirportButton = new JButton("🛫 Search Route By Airport");
 
         leftPanel.add(searchFlightButton);
         leftPanel.add(favouriteButton);
