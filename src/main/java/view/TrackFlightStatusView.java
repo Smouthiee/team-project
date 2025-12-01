@@ -34,12 +34,10 @@ public class TrackFlightStatusView extends JFrame {
     }
 
     private void initComponents() {
-        // 顶部标题
         JLabel title = new JLabel("Track Live Flight Status", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 18));
         add(title, BorderLayout.NORTH);
 
-        // 中间输入 + 按钮
         JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         inputPanel.add(new JLabel("Flight number (call sign):"));
 
@@ -51,7 +49,7 @@ public class TrackFlightStatusView extends JFrame {
 
         add(inputPanel, BorderLayout.CENTER);
 
-        // 下方结果区域
+        // results at the bottom
         JPanel resultPanel = new JPanel();
         resultPanel.setLayout(new BoxLayout(resultPanel, BoxLayout.Y_AXIS));
 
@@ -70,7 +68,7 @@ public class TrackFlightStatusView extends JFrame {
 
         add(resultPanel, BorderLayout.SOUTH);
 
-        // 按钮事件
+        // button event
         trackButton.addActionListener(e -> onTrackClicked());
     }
 
@@ -84,19 +82,20 @@ public class TrackFlightStatusView extends JFrame {
             return;
         }
 
-        // 调用 use case
         controller.track(flightNumber);
 
-        // 用 viewModel 更新界面
         refreshFromViewModel();
     }
 
     private void refreshFromViewModel() {
-        messageLabel.setText(viewModel.getMessage());
+        String msg = viewModel.getMessage();
+        if (msg != null) {
+            messageLabel.setText("<html>" + msg.replace("\n", "<br>").replace("\r", "") + "</html>");
+        }
         latLabel.setText("Latitude: " + viewModel.getLatitude());
         lonLabel.setText("Longitude: " + viewModel.getLongitude());
-        altLabel.setText("Altitude: " + viewModel.getAltitude());
-        speedLabel.setText("Speed: " + viewModel.getSpeed());
+        altLabel.setText("Altitude: " + viewModel.getAltitude() + " m");
+        speedLabel.setText("Speed: " + viewModel.getSpeed() + " m/s");
     }
 
     public void display() {
