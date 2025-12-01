@@ -35,6 +35,7 @@ public class FlightRadarApiCaller {
                 .uri(URI.create(url))
                 .header("Authorization", "Bearer " + token)
                 .header("User-Agent", "Java FR24 Client")
+                .header("Accept-version", "v1")
                 .GET()
                 .build();
 

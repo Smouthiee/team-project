@@ -82,7 +82,8 @@ public class OpenSkyCallSignSnapShotService {
         String rawJSON = Files.readString(openSkyCacheFile, StandardCharsets.UTF_8);
         JSONObject rawRoot = new JSONObject(rawJSON);
         long snapshotEpoch = rawRoot.getLong("lastUpdated");
-        JSONArray states = rawRoot.getJSONArray("states");
+        JSONObject temp = rawRoot.getJSONObject("cachedFlights");
+        JSONArray states = temp.getJSONArray("states");
 
         Set<String> uniqueCallsigns = new LinkedHashSet<>();
         for (int i = 0; i < states.length(); i++) {
