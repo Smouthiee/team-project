@@ -46,3 +46,4 @@ src/main/resources/secret.json
 data/*
 !data/airport_initial_load.json
 !data/rule.txt
+src/OpenSky_cache.json
