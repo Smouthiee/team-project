@@ -2,6 +2,11 @@ package use_case.TrackFlightStatus;
 import data_access.TrackFlightStatusDataAccessInterface;
 import entity.FlightStatus;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class TrackFlightStatusInteractor implements TrackFlightStatusInputBoundary {
     private final TrackFlightStatusDataAccessInterface flightStatusDataAccess;
     private final TrackFlightStatusOutputBoundary presenter;
@@ -18,7 +23,6 @@ public class TrackFlightStatusInteractor implements TrackFlightStatusInputBounda
 
         FlightStatus status = flightStatusDataAccess.getStatusByFlightNumber(flightNumber);
         String message;
-        String eta = null;
         double lat = 0, lon = 0, alt = 0, speed = 0;
         int lastUpdate = 0;
 
@@ -33,17 +37,26 @@ public class TrackFlightStatusInteractor implements TrackFlightStatusInputBounda
             alt = status.getAltitude();
             speed = status.getSpeed();
             lastUpdate = status.getLastUpdate();
+
+            String lastUpdateText;
+            if (lastUpdate > 0) {
+                Instant instant = Instant.ofEpochSecond(lastUpdate);
+                ZonedDateTime localTime = instant.atZone(ZoneId.systemDefault());
+
+                DateTimeFormatter formatter =
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+                lastUpdateText = localTime.format(formatter);
+            } else {
+                lastUpdateText = "unknown";
+            }
+
+            message = String.format(
+                    "Live status for flight %s (last update: %s)",
+                    status.getFlightNumber(),
+                    lastUpdateText
+            );
         }
-        message = String.format(
-                "Flight %s live status:\n" +
-                        "ETA: %s\n" +
-                        "Position: (%.4f, %.4f)\n" +
-                        "Altitude: %.0f\n" +
-                        "Speed: %.0f",
-                status.getFlightNumber(),
-                lat, lon,
-                alt, speed, lastUpdate
-        );
 
     TrackFlightStatusOutputData outputData =
             new TrackFlightStatusOutputData(
@@ -52,7 +65,6 @@ public class TrackFlightStatusInteractor implements TrackFlightStatusInputBounda
                     message
             );
 
-    // 4. 交给 presenter
         presenter.present(outputData);
     }
 }
