@@ -10,6 +10,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -110,7 +114,19 @@ public class ViewActiveFlightDataAccess implements ViewActiveFlightsDataAccessIn
             // Update data
             root.put("searchCount", oldCount + 1);
             root.put("lastPrefixSearched", prefix);
-            root.put("lastUpdated", System.currentTimeMillis() / 1000);
+            long epoch = System.currentTimeMillis() / 1000;
+
+            Instant instant = Instant.ofEpochSecond(epoch);
+            ZonedDateTime localTime = instant.atZone(ZoneId.systemDefault());
+
+            DateTimeFormatter formatter =
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+            String readableTime = localTime.format(formatter);
+
+            root.put("lastUpdatedEpoch", epoch);
+            root.put("lastUpdatedReadable", readableTime);
+
 
             root.put("cachedFlights", new JSONObject(jsonText));
 
@@ -139,12 +155,12 @@ public class ViewActiveFlightDataAccess implements ViewActiveFlightsDataAccessIn
 
             int searchCount = root.optInt("searchCount", 0);
             String prefix = root.optString("lastPrefixSearched", "N/A");
-            long lastUpdated = root.optLong("lastUpdated", 0);
+            String lastUpdatedReadable = root.optString("lastUpdatedReadable", "Unknown");
 
             System.out.println("Loaded cache metadata:");
             System.out.println("Search count: " + searchCount);
             System.out.println("Last prefix: " + prefix);
-            System.out.println("Last updated: " + lastUpdated);
+            System.out.println("Last updated: " + lastUpdatedReadable);
 
             JSONObject cachedFlights = root.getJSONObject("cachedFlights");
             return cachedFlights.toString();
