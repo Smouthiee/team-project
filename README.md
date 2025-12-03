@@ -229,6 +229,56 @@ Enters a flight number that is already in favourites
 ![use case 2 img_4.png](use case 2 img 4.png)
 
 
+# 🛫 Use Case 5: Search Route by Airports
+
+Use Case 4 allows user to plan for flight by checking whether two airports has direct connected flights.
+The Search Route by Airports provides the airport-graph logic that powers all “route awareness” features in the project.  
+It enables:
+
+- Checking whether **two airports are directly connected**
+- Finding a **multi-hop route with the fewest intermediate airports**
+- Showing **all airports connected** to a given airport
+- Automatically **building graph edges** when new flight data arrives
+
+This module follows **Clean Architecture**, ensuring separation of concerns, testability, and easy replacement of data sources or presentation layers.
+
+With some initial connected airports loaded to the application(airport repository) when it starts to run, then everytime View Active Flights produce fresh data from OpenSky api, Airport graph service will add more connections into the airport graph.
+The addition of the airports are done by calling the FlightRadar24 api to get the endpoints (takeoff and landing) airports of the new call signs.
+
+Airport Route Search System:
+
+| Case                      | Meaning                                                                                              | Expected message                        |
+|---------------------------|------------------------------------------------------------------------------------------------------|-----------------------------------------|
+| **Connected Airports**    | Airport repository has record of two airports' connection                                            | `"Air ports has direct connect flight"` |
+| **Disconnected Airports** | Airport repository has no record of two airports's connection/ or the are not connected in real life | `"Airports has no direct flight"`       |
+| **Non-existence Airport** | Airport does not exists/ or airport not yet in the system                                            | `"Airport not fund"`                    |
+
+Although not completed, this use case has capabilities of:
+1. Showing the force directed graph of all the connected airports in the airport repository
+2. Looking for connections for non-direct connected airports.
+
+# Main Flow:
+User enters two existing in project airports: eg. YYZ, YVR (Toronto Pearson Airport,Vancouver International Airport)in the "from"/"to" and it will check the airport repository graph,
+return existing airport information and their connection relation.
+
+![uc4_1.png](uc4_1.png)
+
+# Alternative Flow 1:
+User enters two existing airports eg, SIN, YYZ (Singapore Changi Airport, Toronto Pearson Airport), although they do exist, but currently there is no direct flight.
+
+![uc4_2.png](uc4_2.png)
+
+# Alternative Flow 2:
+User enters two non-existing airport (not existing in the application), and application will return no valid airports in the record:
+
+![uc4_3.png](uc4_3.png)
+# Cocurrent Flow:
+Each time user check Active Flights by use case 5, a matrix of currently in-air flight will be pulled from OpenSky api, and in each flights' state there is a call sign.
+`OpenskyCacheWatcher` is monitoring the `StandardWatchEventKinds` of this file. Upon new changes, the watcher will call `OpenSkyCallSignSnapShotService` to get all the call signs.
+And `OtoABridge` will run to call the FlightRadar24 get the flight endpoint information and add: 
+1. New airports from the new call signs. -Due to FlightRadar24 api tier limitation, there will be 10 random call signs from the thousands of call signs from OpenSky_cache.
+2. the connected airports to the airport repository.
+
 # 🛫 Use Case 5: View Active Flights
 
 Use Case 5 allows a user to view currently active flights belonging to a specific airline.
