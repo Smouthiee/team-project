@@ -297,6 +297,50 @@ If the user enters an invalid input, the system will display that this is an inv
 
 ![img_22.png](img_22.png)
 
+# 🛫 Use Case 6: Track Flight Status
+
+
+## User Story
+
+> As a traveller, I want to enter a flight number and see its live position and speed,  
+> so that I can quickly check the current status of my flight.
+
+This use case lets the user type a flight number (call sign, e.g. `AC123`),  
+fetch live data from the OpenSky API, and display:
+
+- Latitude / Longitude (degrees)
+- Altitude (meters)
+- Speed (m/s)
+- Last update time (converted from Unix seconds to local time)
+
+---
+![img_3.png](img_3.png)
+## Flow of Control
+
+1. In **`MainMenu`**, the user clicks **“Track Live Flight Status”**.  
+   `AppBuilder` constructs the objects for this feature and shows `TrackFlightStatusView`.
+
+2. In `TrackFlightStatusView`, the user enters a flight number and clicks **Track**.  
+   The view calls:
+   ```java
+   controller.track(flightNumber);
+   
+3. `TrackFlightStatusController` wraps the string in TrackFlightStatusInputData and calls:
+    ```java
+    interactor.execute(inputData);
+
+4. `TrackFlightStatusInteractor`:
+    - Validates the input 
+    - Uses `TrackFlightStatusDataAccessInterface` to fetch a FlightStatus from OpenSky 
+    - Converts lastUpdate (Unix seconds) to a local time string 
+    - Builds TrackFlightStatusOutputData and calls presenter.present(outputData).
+
+5. `TrackFlightStatusPresenter` copies fields from `OutputData` into `TrackFlightStatusViewModel`
+(flightNumber, latitude, longitude, altitude, speed, message, etc.).
+
+6. `TrackFlightStatusView` calls `refreshFromViewModel()`, reads the ViewModel, and updates the labels
+(summary message + latitude / longitude / altitude / speed shown to the user).
+---
 
 Please keep this up-to-date with information about your project throughout the term.
 
